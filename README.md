@@ -1,38 +1,26 @@
-# Mapa Fácil — integração Cakto (etapa técnica)
+# Bright Basket Checkout
 
-Esta versão mantém a página de vendas e o checkout personalizado. Inclui rotas serverless da Vercel para criar cobrança Pix e cartão, consultar pedido e validar a assinatura de webhooks.
+Salve melhora esse design aí do meu site melhora o checkout tbm pode muda a foto muda os bagui tudo aí meu mano só quero uma parada profissional bonita um site profissional e de alta conversão para vender melhor beleza e é isso mano
 
-## Antes de ativar cobranças
+This project was built with [Lovable](https://lovable.dev).
 
-1. Na Cakto, abra **Produtos > sua oferta de R$ 27,90** e copie o **ID/short_id da oferta**. O endereço `https://pay.cakto.com.br/3eidzea_1292287` identifica um checkout, mas NÃO confirma por si só qual é o `offerId` aceito pela API. Não invente nem copie o sufixo do URL como se fosse o ID da oferta.
-2. Na Vercel > Settings > Environment Variables, configure em **Production**:
-   - `CAKTO_CLIENT_ID` (já cadastrada)
-   - `CAKTO_CLIENT_SECRET` (já cadastrada)
-   - `CAKTO_OFFER_ID_BASICO` = ID da oferta de R$ 27,90 (a confirmar)
-   - `CAKTO_WEBHOOK_SECRET` = segredo do webhook criado na Cakto (a configurar)
-   - `CAKTO_ENABLE_CARD` = `true` **somente depois de testar o SDK e o antifraude**. Sem isso o cartão fica desabilitado de propósito.
-   - `CAKTO_OFFER_ID_COMPLETO` = ID da oferta de R$ 37,90, **somente se existir e estiver ativa**. Até lá o plano completo não cobra.
-3. Crie um webhook na Cakto para `https://SEU-DOMINIO.vercel.app/api/webhook`, evento `purchase_approved`, e use o segredo gerado na variável acima. A assinatura HMAC e o timestamp são validados no servidor.
-4. Faça um **novo deploy** após cadastrar as variáveis. Teste primeiro com a sua própria compra e confira o valor, QR Code, pedido, status e recebimento do webhook.
-5. **A entrega automática do PDF ainda não está implementada.** O webhook apenas valida e registra o ID do pedido no log. Não coloque o PDF pago na pasta pública; para entrega segura será necessário armazenamento privado + banco de dados + deduplicação de eventos + envio autenticado por e-mail ou link temporário. O checkout avisa que a entrega depende da configuração.
+**Live app**: https://bright-basket-checkout.lovable.app
 
-## Observações importantes
+## Build with Lovable
 
-- Pix usa `POST /public_api/payments/`, OAuth2 e `X-Idempotency-Key`. QR Code gerado no navegador a partir do BR Code devolvido pela Cakto.
-- Cartão usa SDK oficial para tokenização no navegador, antifraude e `cardToken` no backend; **não** armazene nem registre número ou CVV no servidor. Para produção, considere fluxo 3DS e testes de risco/chargeback.
-- O preço é conferido **no backend** contra R$ 27,90 para básico e R$ 37,90 para completo. A oferta precisa ter o valor correto na Cakto.
-- O endpoint de consulta de pedido usa ID não previsível; em produção, associe a consulta a uma sessão de compra para impedir acesso não autorizado a estados de pedidos.
-- O checkout hospedado Cakto não é usado para redirecionar o cliente.
-- Se a conta Cakto ainda estiver em validação cadastral, cobranças diretas podem ser bloqueadas.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d805378d-f28b-4713-8043-30bba25e95b3).
 
-Documentação: https://docs.cakto.com.br/authentication.md · https://docs.cakto.com.br/api-reference/payments/create-pix.md · https://docs.cakto.com.br/api-reference/payments/create-card.md · https://docs.cakto.com.br/conceitos/webhooks.md
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
+## Development
 
-## Versão para GitHub mobile — tudo na raiz
-Envie todos os arquivos diretamente na raiz do repositório. O backend está concentrado em `backend.js`; `vercel.json` faz as rotas `/api/*` apontarem para ele. Esta versão usa o sistema de builds legados da Vercel (`@vercel/node` + `@vercel/static`). Não envie as pastas antigas `api/` ou `lib/`.
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
-Ainda é necessário configurar `CAKTO_OFFER_ID_BASICO` com o ID da oferta (não apenas URL), `CAKTO_WEBHOOK_SECRET` para notificações e testar o deploy antes de vender. O webhook ainda não entrega o PDF automaticamente.
-
-
-## Atualização visual Premium
-Substitua `checkout.html`, `checkout.css` e `checkout.js` pelos novos arquivos na raiz do GitHub. Mantenha `backend.js`, `vercel.json`, `index.html`, `styles.css`, `script.js` e `mapa-facil-produto.jpg` na mesma raiz. O backend foi preservado. A cobrança Pix é real quando a oferta e credenciais estão corretamente configuradas. A entrega automática do PDF ainda precisa ser implementada. O QR Code usa biblioteca carregada de CDN; se ela falhar, o código copia e cola permanece disponível.
+```sh
+git clone <this-repository-url>
+cd <repository-name>
+npm i
+npm run dev
+```
