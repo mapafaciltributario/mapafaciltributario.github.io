@@ -711,7 +711,7 @@ function PaidState({ email }: { email: string }) {
         {email && (
           <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> {email}</p>
         )}
-        <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Smartphone className="size-4 text-primary" /> No seu WhatsApp</p>
+        <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> No seu e-mail</p>
       </div>
     </div>
   );
