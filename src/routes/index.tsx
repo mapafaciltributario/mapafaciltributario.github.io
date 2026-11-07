@@ -36,7 +36,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { BONUSES, GUARANTEE_DAYS, PLANS, brl, savings } from "@/lib/plans";
+import { BONUSES, GUARANTEE_DAYS, PLANS, bonusTotal, brl, savings } from "@/lib/plans";
 import bonus01 from "@/assets/bonus-01-glossario.jpg";
 import bonus02 from "@/assets/bonus-02-checklist.jpg";
 import bonus03 from "@/assets/bonus-03-linha-do-tempo.jpg";
@@ -45,8 +45,8 @@ import bonus05 from "@/assets/bonus-05-tabela-codigos.jpg";
 import bonus06 from "@/assets/bonus-06-calculadora.jpg";
 import bonus07 from "@/assets/bonus-07-gabarito-nota.jpg";
 import bonus08 from "@/assets/bonus-08-guia-emissao.jpg";
-import heroAsset from "@/assets/mapa-facil-mesa.jpg";
-import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg";
+import heroAsset from "@/assets/mapa-facil-mesa.jpg.asset.json";
+import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -174,7 +174,7 @@ function Hero() {
           <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-highlight/30 blur-3xl" />
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
             <img
-              src={heroAsset}
+              src={heroAsset.url}
               alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo sobre uma mesa"
               width={1600}
               height={1200}
@@ -341,7 +341,7 @@ function Contents() {
         <Reveal delay={100} className="order-1 lg:order-2">
           <div className="overflow-hidden rounded-3xl shadow-lift">
             <img
-              src={devicesAsset}
+              src={devicesAsset.url}
               alt="Mapa mental do IBS em um tablet e a capa do Mapa Fácil em um celular"
               width={1200}
               height={1200}
@@ -420,7 +420,8 @@ function Bonuses() {
           <span className="marker">8 bônus</span> no Plano Completo
         </h2>
         <p className="mt-3 text-muted-foreground">
-          Materiais complementares incluídos no Plano Completo, sem cobrança adicional.
+          Ferramentas práticas para aplicar a Reforma na rotina. Separados, custariam{" "}
+          <strong className="text-foreground">{brl(bonusTotal())}</strong> — com o Plano Completo, saem de graça.
         </p>
       </Reveal>
       <Reveal className="fade-x -mx-4 mt-12 sm:mx-0">
@@ -431,7 +432,7 @@ function Bonuses() {
           aria-label="Bônus passando na tela"
         >
           <CarouselContent className="py-2">
-        {BONUSES.map(({ title, text }, i) => {
+        {BONUSES.map(({ title, text, value }, i) => {
           const { icon: Icon, img } = BONUS_MEDIA[i % BONUS_MEDIA.length]!;
           return (
             <CarouselItem key={title} className="basis-[78%] sm:basis-[45%] lg:basis-[30%] xl:basis-[24%]">
@@ -456,7 +457,9 @@ function Bonuses() {
                 </div>
                 <p className="mt-2 mb-4 text-sm leading-relaxed text-muted-foreground">{text}</p>
                 <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
-                  <span className="text-sm text-muted-foreground">Incluso no pacote</span>
+                  <span className="text-sm text-muted-foreground">
+                    De <span className="font-bold line-through decoration-destructive/70">{brl(value)}</span>
+                  </span>
                   <span className="rounded-full bg-success px-3 py-1 text-xs font-extrabold tracking-wider text-primary-foreground">
                     GRÁTIS
                   </span>
@@ -472,7 +475,10 @@ function Bonuses() {
       <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver com calma</p>
 
       <Reveal className="mx-auto mt-10 max-w-3xl rounded-[2rem] border-2 border-dashed border-primary/30 bg-card p-6 text-center shadow-card sm:p-8">
-        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Os 8 bônus fazem parte do Plano Completo</p>
+        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Valor total dos 8 bônus</p>
+        <p className="mt-1 font-display text-3xl font-extrabold text-muted-foreground line-through decoration-destructive/70 sm:text-4xl">
+          {brl(bonusTotal())}
+        </p>
         <p className="mt-3 text-xl font-extrabold sm:text-2xl">
           Hoje: <span className="marker-green">R$ 0,00</span> ao adquirir o Plano Completo
         </p>
@@ -507,7 +513,7 @@ function Pricing() {
           <Reveal className="order-1 md:order-2">
             <div className="relative rounded-[2rem] bg-card p-6 text-card-foreground shadow-lift ring-4 ring-highlight sm:p-8">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-highlight px-4 py-1.5 text-xs font-extrabold tracking-wider whitespace-nowrap text-ink shadow-card">
-                ★ PLANO COMPLETO · 8 BÔNUS
+                ★ MAIS ESCOLHIDO · MELHOR CUSTO-BENEFÍCIO
               </span>
               <div className="flex items-start justify-between gap-4 pt-2">
                 <div>
@@ -529,7 +535,8 @@ function Pricing() {
                     <Tick />
                     <span className="flex-1"><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
                     <span className="shrink-0 text-right text-xs leading-tight">
-                      <span className="block font-extrabold text-success">INCLUSO</span>
+                      <span className="block text-muted-foreground line-through">{brl(b.value)}</span>
+                      <span className="block font-extrabold text-success">GRÁTIS</span>
                     </span>
                   </li>
                 ))}
