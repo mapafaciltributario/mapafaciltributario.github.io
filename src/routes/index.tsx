@@ -45,8 +45,8 @@ import bonus05 from "@/assets/bonus-05-tabela-codigos.jpg";
 import bonus06 from "@/assets/bonus-06-calculadora.jpg";
 import bonus07 from "@/assets/bonus-07-gabarito-nota.jpg";
 import bonus08 from "@/assets/bonus-08-guia-emissao.jpg";
-import heroAsset from "@/assets/mapa-facil-mesa.jpg.asset.json";
-import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg.asset.json";
+import heroAsset from "@/assets/mapa-facil-mesa.jpg";
+import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -174,7 +174,7 @@ function Hero() {
           <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-highlight/30 blur-3xl" />
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
             <img
-              src={heroAsset.url}
+              src={heroAsset}
               alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo sobre uma mesa"
               width={1600}
               height={1200}
@@ -341,7 +341,7 @@ function Contents() {
         <Reveal delay={100} className="order-1 lg:order-2">
           <div className="overflow-hidden rounded-3xl shadow-lift">
             <img
-              src={devicesAsset.url}
+              src={devicesAsset}
               alt="Mapa mental do IBS em um tablet e a capa do Mapa Fácil em um celular"
               width={1200}
               height={1200}
@@ -513,7 +513,7 @@ function Pricing() {
           <Reveal className="order-1 md:order-2">
             <div className="relative rounded-[2rem] bg-card p-6 text-card-foreground shadow-lift ring-4 ring-highlight sm:p-8">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-highlight px-4 py-1.5 text-xs font-extrabold tracking-wider whitespace-nowrap text-ink shadow-card">
-                ★ MAIS ESCOLHIDO · MELHOR CUSTO-BENEFÍCIO
+                ★ PLANO COMPLETO · 8 BÔNUS
               </span>
               <div className="flex items-start justify-between gap-4 pt-2">
                 <div>
@@ -535,8 +535,7 @@ function Pricing() {
                     <Tick />
                     <span className="flex-1"><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
                     <span className="shrink-0 text-right text-xs leading-tight">
-                      <span className="block text-muted-foreground line-through">{brl(b.value)}</span>
-                      <span className="block font-extrabold text-success">GRÁTIS</span>
+                      <span className="block font-extrabold text-success">INCLUSO</span>
                     </span>
                   </li>
                 ))}
