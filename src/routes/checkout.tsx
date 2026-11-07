@@ -709,9 +709,8 @@ function PaidState({ email }: { email: string }) {
       </p>
       <div className="mx-auto mt-6 grid max-w-sm gap-2 text-left text-sm">
         {email && (
-          <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> {email}</p>
+          <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> <span><strong>Produto entregue no seu e-mail:</strong> {email}</span></p>
         )}
-        <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> No seu e-mail</p>
       </div>
     </div>
   );

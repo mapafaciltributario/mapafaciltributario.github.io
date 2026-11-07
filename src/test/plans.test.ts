@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GUARANTEE_DAYS, PLANS, savings, upgradeDiff, validDocument, validPhone } from "@/lib/plans";
+import { BONUSES, GUARANTEE_DAYS, PLANS, bonusTotal, savings, upgradeDiff, validDocument, validPhone } from "@/lib/plans";
 
 describe("offers", () => {
   it("Plano Básico costs R$ 27,90 (from R$ 57,90)", () => {
@@ -16,6 +16,11 @@ describe("offers", () => {
 
   it("upgrading Básico to Completo costs R$ 10,00 more", () => {
     expect(upgradeDiff()).toBe(10);
+  });
+
+  it("8 bonuses worth R$ 264,70 in total, free with Plano Completo", () => {
+    expect(BONUSES).toHaveLength(8);
+    expect(bonusTotal()).toBe(264.7);
   });
 
   it("guarantee is 7 days", () => {

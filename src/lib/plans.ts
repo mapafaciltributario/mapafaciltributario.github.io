@@ -32,6 +32,29 @@ export const PLANS: Record<PlanId, Plan> = {
 
 export const GUARANTEE_DAYS = 7;
 
+/** Bonuses included free in the Plano Completo, with their standalone value. */
+export interface Bonus {
+  title: string;
+  text: string;
+  value: number;
+}
+
+export const BONUSES: Bonus[] = [
+  { title: "Glossário Visual da Reforma", text: "Os principais termos sem juridiquês, para consulta rápida.", value: 27 },
+  { title: "Checklist “O Que Entender Primeiro”", text: "Saiba quais temas priorizar antes de se aprofundar.", value: 19.9 },
+  { title: "Linha do Tempo Visual", text: "As fases da transição da Reforma em um único material.", value: 24.9 },
+  { title: "Quadro Antes x Depois", text: "Comparativo entre o sistema atual e o novo modelo.", value: 24.9 },
+  { title: "Tabela de CST, cClassTrib, cIndOp e cCredPres", text: "Consulta rápida dos novos códigos.", value: 37 },
+  { title: "Planilha Calculadora de IBS/CBS", text: "Calcule e confira o destaque na nota. Excel e Google Planilhas.", value: 47 },
+  { title: "Gabarito de preenchimento na Nota Fiscal", text: "O que preencher nos campos de IBS/CBS, etapa por etapa.", value: 37 },
+  { title: "Guia de emissão de NF-e, NFC-e, CT-e e NFS-e", text: "Como emitir cada documento com as novas regras.", value: 47 },
+];
+
+/** Combined value of all bonuses if bought separately. */
+export function bonusTotal() {
+  return Math.round(BONUSES.reduce((sum, b) => sum + b.value, 0) * 100) / 100;
+}
+
 export function brl(value: number) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }

@@ -209,6 +209,11 @@
   background-image: var(--gradient-cta);
 }
 
+/* Soft fade on the left/right edges of horizontal carousels. */
+@utility fade-x {
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
 @utility reveal {
   opacity: 0;
   transform: translateY(16px);

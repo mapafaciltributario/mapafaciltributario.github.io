@@ -30,6 +30,6 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Offers, prices and CPF/CNPJ/phone validators live only in `src/lib/plans.ts`; UI and server both import them so prices can't drift.
+- Offers, prices, bonus values and CPF/CNPJ/phone validators live only in `src/lib/plans.ts`; UI and server both import them so prices can't drift.
 - Cakto payments run in server functions (`src/lib/cakto.functions.ts` + `cakto.server.ts`); credentials stay in secrets, and the server re-checks the offer price before charging.
 - Cakto webhook lives at `/api/public/cakto-webhook` and must verify the HMAC signature + timestamp before reading the payload.

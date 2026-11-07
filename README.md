@@ -1,14 +1,20 @@
-# Bright Basket Checkout
+# Bonus Mockup Vault
 
-Salve melhora esse design aí do meu site melhora o checkout tbm pode muda a foto muda os bagui tudo aí meu mano só quero uma parada profissional bonita um site profissional e de alta conversão para vender melhor beleza e é isso mano
+Salve faça isso 
+
+Coloca mock up em cada bônus
+
+Na página de vendas
+
+E coloca quanto seria cada bônus, mas dps faz que eles são de graça se adquirir o produto principal
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://bright-basket-checkout.lovable.app
+**Live app**: https://bonus-mockup-vault.lovable.app
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d805378d-f28b-4713-8043-30bba25e95b3).
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/39cd3aec-c63d-49ef-9904-7f7e5dc1928f).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.

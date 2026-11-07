@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState, type ComponentType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
+import AutoScroll from "embla-carousel-auto-scroll";
 import {
   ArrowRight,
   BookOpen,
@@ -28,15 +29,24 @@ import {
 import { Logo } from "@/components/brand/Logo";
 import { Reveal } from "@/components/landing/Reveal";
 import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { GUARANTEE_DAYS, PLANS, brl, savings } from "@/lib/plans";
-import heroImg from "@/assets/mapa-facil-mesa.jpg";
-import devicesImg from "@/assets/mapa-facil-dispositivos.jpg";
+import { BONUSES, GUARANTEE_DAYS, PLANS, brl, savings } from "@/lib/plans";
+import bonus01 from "@/assets/bonus-01-glossario.jpg";
+import bonus02 from "@/assets/bonus-02-checklist.jpg";
+import bonus03 from "@/assets/bonus-03-linha-do-tempo.jpg";
+import bonus04 from "@/assets/bonus-04-antes-depois.jpg";
+import bonus05 from "@/assets/bonus-05-tabela-codigos.jpg";
+import bonus06 from "@/assets/bonus-06-calculadora.jpg";
+import bonus07 from "@/assets/bonus-07-gabarito-nota.jpg";
+import bonus08 from "@/assets/bonus-08-guia-emissao.jpg";
+import heroAsset from "@/assets/mapa-facil-mesa.jpg";
+import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -164,7 +174,7 @@ function Hero() {
           <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-highlight/30 blur-3xl" />
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
             <img
-              src={heroImg}
+              src={heroAsset}
               alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo sobre uma mesa"
               width={1600}
               height={1200}
@@ -331,7 +341,7 @@ function Contents() {
         <Reveal delay={100} className="order-1 lg:order-2">
           <div className="overflow-hidden rounded-3xl shadow-lift">
             <img
-              src={devicesImg}
+              src={devicesAsset}
               alt="Mapa mental do IBS em um tablet e a capa do Mapa Fácil em um celular"
               width={1200}
               height={1200}
@@ -380,18 +390,28 @@ function Audience() {
 
 /* -------------------------------- Bonuses -------------------------------- */
 
-const BONUSES = [
-  { icon: BookOpen, title: "Glossário Visual da Reforma", text: "Os principais termos sem juridiquês, para consulta rápida." },
-  { icon: ListChecks, title: "Checklist “O Que Entender Primeiro”", text: "Saiba quais temas priorizar antes de se aprofundar." },
-  { icon: Clock, title: "Linha do Tempo Visual", text: "As fases da transição da Reforma em um único material." },
-  { icon: Layers, title: "Quadro Antes x Depois", text: "Comparativo entre o sistema atual e o novo modelo." },
-  { icon: Table2, title: "Tabela de CST, cClassTrib, cIndOp e cCredPres", text: "Consulta rápida dos novos códigos." },
-  { icon: Calculator, title: "Planilha Calculadora de IBS/CBS", text: "Calcule e confira o destaque na nota. Excel e Google Planilhas." },
-  { icon: FileCheck, title: "Gabarito de preenchimento na Nota Fiscal", text: "O que preencher nos campos de IBS/CBS, etapa por etapa." },
-  { icon: Receipt, title: "Guia de emissão de NF-e, NFC-e, CT-e e NFS-e", text: "Como emitir cada documento com as novas regras." },
+const BONUS_MEDIA = [
+  { icon: BookOpen, img: bonus01 },
+  { icon: ListChecks, img: bonus02 },
+  { icon: Clock, img: bonus03 },
+  { icon: Layers, img: bonus04 },
+  { icon: Table2, img: bonus05 },
+  { icon: Calculator, img: bonus06 },
+  { icon: FileCheck, img: bonus07 },
+  { icon: Receipt, img: bonus08 },
 ];
 
 function Bonuses() {
+  const autoScroll = useRef(
+    AutoScroll({ speed: 0.8, startDelay: 600, stopOnInteraction: false, stopOnMouseEnter: true, stopOnFocusIn: true }),
+  );
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) autoScroll.current.stop();
+  }, [api]);
+
   return (
     <section id="bonus" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 md:py-28">
       <Reveal className="mx-auto max-w-2xl text-center">
@@ -399,20 +419,72 @@ function Bonuses() {
         <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
           <span className="marker">8 bônus</span> no Plano Completo
         </h2>
-        <p className="mt-3 text-muted-foreground">Ferramentas práticas para aplicar a Reforma na rotina.</p>
+        <p className="mt-3 text-muted-foreground">
+          Materiais complementares incluídos no Plano Completo, sem cobrança adicional.
+        </p>
       </Reveal>
-      <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {BONUSES.map(({ icon: Icon, title, text }, i) => (
-          <Reveal key={title} delay={(i % 4) * 50} className="group relative flex flex-col rounded-3xl border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-lift">
-            <div className="flex items-center justify-between">
-              <span className="grid size-11 place-items-center rounded-2xl bg-secondary text-primary"><Icon className="size-5" /></span>
-              <span className="rounded-full bg-accent px-2.5 py-1 text-[10px] font-extrabold tracking-wider text-accent-foreground">BÔNUS {String(i + 1).padStart(2, "0")}</span>
+      <Reveal className="fade-x -mx-4 mt-12 sm:mx-0">
+        <Carousel
+          opts={{ loop: true, align: "start", dragFree: true }}
+          plugins={[autoScroll.current]}
+          setApi={setApi}
+          aria-label="Bônus passando na tela"
+        >
+          <CarouselContent className="py-2">
+        {BONUSES.map(({ title, text }, i) => {
+          const { icon: Icon, img } = BONUS_MEDIA[i % BONUS_MEDIA.length]!;
+          return (
+            <CarouselItem key={title} className="basis-[78%] sm:basis-[45%] lg:basis-[30%] xl:basis-[24%]">
+            <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-shadow hover:shadow-lift">
+              <div className="relative aspect-square overflow-hidden bg-secondary">
+                <img
+                  src={img}
+                  alt={`Mockup do bônus ${title}`}
+                  width={1024}
+                  height={1024}
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute top-3 left-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-extrabold tracking-wider text-accent-foreground shadow-card">
+                  BÔNUS {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col p-5">
+                <div className="flex items-start gap-3">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><Icon className="size-4" /></span>
+                  <h3 className="text-[16px] font-bold leading-snug">{title}</h3>
+                </div>
+                <p className="mt-2 mb-4 text-sm leading-relaxed text-muted-foreground">{text}</p>
+                <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
+                  <span className="text-sm text-muted-foreground">Incluso no pacote</span>
+                  <span className="rounded-full bg-success px-3 py-1 text-xs font-extrabold tracking-wider text-primary-foreground">
+                    GRÁTIS
+                  </span>
+                </div>
+              </div>
             </div>
-            <h3 className="mt-4 text-[17px] font-bold leading-snug">{title}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{text}</p>
-          </Reveal>
-        ))}
-      </div>
+            </CarouselItem>
+          );
+        })}
+          </CarouselContent>
+        </Carousel>
+      </Reveal>
+      <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver com calma</p>
+
+      <Reveal className="mx-auto mt-10 max-w-3xl rounded-[2rem] border-2 border-dashed border-primary/30 bg-card p-6 text-center shadow-card sm:p-8">
+        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Os 8 bônus fazem parte do Plano Completo</p>
+        <p className="mt-3 text-xl font-extrabold sm:text-2xl">
+          Hoje: <span className="marker-green">R$ 0,00</span> ao adquirir o Plano Completo
+        </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Você leva o material principal + todos os bônus por apenas {brl(completo.price)}.
+        </p>
+        <Button asChild variant="cta" size="xl" className="mt-6 w-full sm:w-auto">
+          <Link to="/checkout" search={{ plano: "completo" }}>
+            Quero os 8 bônus grátis <ArrowRight />
+          </Link>
+        </Button>
+      </Reveal>
     </section>
   );
 }
@@ -435,7 +507,7 @@ function Pricing() {
           <Reveal className="order-1 md:order-2">
             <div className="relative rounded-[2rem] bg-card p-6 text-card-foreground shadow-lift ring-4 ring-highlight sm:p-8">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-highlight px-4 py-1.5 text-xs font-extrabold tracking-wider whitespace-nowrap text-ink shadow-card">
-                ★ MAIS ESCOLHIDO · MELHOR CUSTO-BENEFÍCIO
+                ★ PLANO COMPLETO · 8 BÔNUS
               </span>
               <div className="flex items-start justify-between gap-4 pt-2">
                 <div>
@@ -455,7 +527,10 @@ function Pricing() {
                 {BONUSES.map((b, i) => (
                   <li key={b.title} className="flex gap-3 text-[14.5px]">
                     <Tick />
-                    <span><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
+                    <span className="flex-1"><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
+                    <span className="shrink-0 text-right text-xs leading-tight">
+                      <span className="block font-extrabold text-success">INCLUSO</span>
+                    </span>
                   </li>
                 ))}
               </ul>
