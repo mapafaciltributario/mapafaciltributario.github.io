@@ -571,7 +571,7 @@ function OrderSummary({ plano, compact }: { plano: PlanId; compact?: boolean }) 
   if (compact) {
     return (
       <div className="flex items-center gap-4 rounded-3xl border border-border bg-card p-3 shadow-card">
-        <img src={productAsset.url} alt="Mapa Fácil da Reforma Tributária" className="size-20 shrink-0 rounded-2xl object-cover" />
+        <img src={productAsset} alt="Mapa Fácil da Reforma Tributária" className="size-20 shrink-0 rounded-2xl object-cover" />
         <div className="min-w-0 flex-1">
           <p className="text-[11px] font-extrabold tracking-wider text-primary uppercase">{plan.name}</p>
           <p className="truncate font-bold">{plan.title}</p>
@@ -586,7 +586,7 @@ function OrderSummary({ plano, compact }: { plano: PlanId; compact?: boolean }) 
   return (
     <div className="space-y-4">
       <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-card">
-        <img src={productAsset.url} alt="Prévia dos materiais do Mapa Fácil" className="aspect-[4/3] w-full object-cover" />
+        <img src={productAsset} alt="Prévia dos materiais do Mapa Fácil" className="aspect-[4/3] w-full object-cover" />
         <div className="p-6">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-extrabold tracking-wider text-muted-foreground uppercase">Resumo do pedido</span>
