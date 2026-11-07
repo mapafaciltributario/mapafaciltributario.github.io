@@ -37,7 +37,7 @@ import {
   type PlanId,
 } from "@/lib/plans";
 import { cn } from "@/lib/utils";
-import productAsset from "@/assets/mapa-facil-colecao.jpg.asset.json";
+import productAsset from "@/assets/mapa-facil-colecao.jpg";
 
 const configQuery = queryOptions({
   queryKey: ["payment-config"],
