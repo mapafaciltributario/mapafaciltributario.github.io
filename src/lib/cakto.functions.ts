@@ -23,6 +23,14 @@ const paySchema = z.object({
   idempotencyKey: z.string().regex(/^[a-f0-9-]{36}$/i),
   cardToken: z.string().min(8).max(512).optional(),
   antifraudReference: z.string().min(8).max(512).optional(),
+  metadata: z.object({
+    utm_source: z.string().max(255).optional(),
+    utm_medium: z.string().max(255).optional(),
+    utm_campaign: z.string().max(255).optional(),
+    utm_term: z.string().max(255).optional(),
+    utm_content: z.string().max(255).optional(),
+    sck: z.string().max(255).optional(),
+  }).strict().optional(),
 });
 
 type PayResult =
@@ -73,6 +81,7 @@ export const createPayment = createServerFn({ method: "POST" })
           docNumber: doc,
         },
         items: [{ offerId, quantity: 1, offerType: "main" }],
+        ...(data.metadata && Object.keys(data.metadata).length ? { metadata: data.metadata } : {}),
       };
 
       if (data.method === "card") {

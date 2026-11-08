@@ -37,6 +37,7 @@ import {
   type PlanId,
 } from "@/lib/plans";
 import { cn } from "@/lib/utils";
+import { getTrackingMetadata } from "@/lib/tracking";
 import productAsset from "@/assets/mapa-facil-colecao.jpg";
 
 const configQuery = queryOptions({
@@ -220,6 +221,7 @@ function CheckoutPage() {
         document: digits(fields.document),
         phone: digits(fields.phone),
         fingerprint: fingerprint.current || randomId(),
+        metadata: getTrackingMetadata(),
       };
       const sig = JSON.stringify(base);
       if (!attempt.current || attempt.current.sig !== sig) attempt.current = { sig, key: randomId() };
