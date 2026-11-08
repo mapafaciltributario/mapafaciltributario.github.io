@@ -108,6 +108,8 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <head>
         <HeadContent />
+        {/* UTMify: rastreamento de UTMs em todas as rotas */}
+        <script src="/utmify-utms.js" defer />
       </head>
       <body>
         {children}
