@@ -129,28 +129,6 @@ function CheckoutPage() {
     }
   }, []);
 
-  // Meta: register checkout entry once per browser tab and plan.
-  // Purchase is intentionally NOT fired here: a generated Pix is not a paid sale.
-  // Approved purchases are handled by the configured Cakto -> UTMify -> Meta flow.
-  useEffect(() => {
-    const key = `mapa_meta_checkout_${plano}`;
-    try {
-      if (sessionStorage.getItem(key) === "1") return;
-      const meta = window as typeof window & { fbq?: (...args: unknown[]) => void };
-      if (typeof meta.fbq !== "function") return;
-      meta.fbq("track", "InitiateCheckout", {
-        content_name: "Mapa Fácil da Reforma Tributária",
-        content_ids: [plano],
-        content_type: "product",
-        value: plan.price,
-        currency: "BRL",
-      });
-      sessionStorage.setItem(key, "1");
-    } catch {
-      // Tracking must never interrupt checkout.
-    }
-  }, [plano, plan.price]);
-
   // Load the Cakto card SDK only when card payments are enabled and chosen.
   useEffect(() => {
     if (!cardAvailable || method !== "card" || sdk.current) return;
