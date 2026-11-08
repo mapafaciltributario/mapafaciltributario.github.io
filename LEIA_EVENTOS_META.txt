@@ -1,0 +1,8 @@
+ATUALIZAÇÃO META — 08/11/2026
+
+1. src/routes/checkout.tsx agora envia InitiateCheckout pelo Pixel oficial quando a rota /checkout é aberta. Uma trava por aba/plano evita repetir o evento ao recarregar a página.
+2. PageView oficial permanece instalado em src/routes/__root.tsx.
+3. Purchase NÃO é enviado ao gerar Pix: Pix pendente não é venda. A UTMify já está configurada para enviar Purchase à Meta apenas para vendas aprovadas recebidas da Cakto. É preciso validar um pagamento aprovado antes de afirmar que o evento funciona.
+4. ATENÇÃO A DUPLICIDADE: se a UTMify também enviar InitiateCheckout por API de Conversões, poderá haver duplicação do evento. Para usar o disparo pelo site, desabilite o envio de InitiateCheckout pela UTMify, ou implemente deduplicação compartilhada com event_id antes de habilitar ambos.
+5. Não alteramos credenciais nem o webhook da Cakto.
+6. O projeto não foi compilado neste ambiente (dependências não instaladas). Faça deploy e verifique o evento no Gerenciador de Eventos.
