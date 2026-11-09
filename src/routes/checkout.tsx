@@ -129,26 +129,6 @@ function CheckoutPage() {
     }
   }, []);
 
-  // Meta Pixel: one InitiateCheckout per checkout page entry.
-  // A plan switch changes the URL but does not re-trigger this event.
-  // The ref also protects against React StrictMode effect replays.
-  const checkoutTracked = useRef(false);
-  useEffect(() => {
-    if (checkoutTracked.current) return;
-    const fbq = (window as Window & {
-      fbq?: (...args: unknown[]) => void;
-    }).fbq;
-    if (typeof fbq !== "function") return;
-    checkoutTracked.current = true;
-    fbq("track", "InitiateCheckout", {
-      currency: "BRL",
-      value: PLANS[plano].price,
-      content_name: "Mapa Fácil da Reforma Tributária",
-      content_type: "product",
-      content_ids: [plano],
-      num_items: 1,
-    });
-  }, [plano]);
 
   // Load the Cakto card SDK only when card payments are enabled and chosen.
   useEffect(() => {
