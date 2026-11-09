@@ -10,6 +10,7 @@ export const TRACKING_KEYS = [
   "utm_term",
   "utm_content",
   "sck",
+  "src",
 ] as const;
 
 export type TrackingMetadata = Partial<Record<(typeof TRACKING_KEYS)[number], string>>;

@@ -110,6 +110,8 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         {/* UTMify: rastreamento de UTMs em todas as rotas */}
         <script src="/utmify-utms.js" defer />
+        {/* UTMify Pixel: código fornecido pelo painel UTMify */}
+        <script src="/utmify-pixel.js" defer />
         {/* Meta Pixel empresarial — Mapa Fácil - Pixel Oficial */}
         <script
           dangerouslySetInnerHTML={{

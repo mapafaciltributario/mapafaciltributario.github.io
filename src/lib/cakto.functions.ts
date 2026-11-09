@@ -30,6 +30,7 @@ const paySchema = z.object({
     utm_term: z.string().max(255).optional(),
     utm_content: z.string().max(255).optional(),
     sck: z.string().max(255).optional(),
+    src: z.string().max(255).optional(),
   }).strict().optional(),
 });
 
