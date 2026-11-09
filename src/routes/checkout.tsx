@@ -20,10 +20,13 @@ import {
 
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/button";
+import { LiveDot } from "@/components/landing/Effects";
 import { createPayment, getOrderStatus, getPaymentConfig } from "@/lib/cakto.functions";
 import {
+  BONUSES,
   GUARANTEE_DAYS,
   PLANS,
+  bonusTotal,
   brl,
   digits,
   luhn,
@@ -307,17 +310,20 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/50">
-      <header className="border-b border-border bg-card">
+    <div className="relative min-h-screen overflow-x-clip bg-background">
+      <div className="tech-grid pointer-events-none absolute inset-x-0 top-0 h-[520px] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]" />
+      <div className="aurora pointer-events-none absolute -inset-x-20 -top-32 h-[460px] opacity-60" />
+
+      <header className="relative z-10 border-b border-border bg-background/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Logo />
-          <span className="flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-xs font-bold text-secondary-foreground">
-            <Lock className="size-3.5" /> Compra 100% segura
+          <span className="glass flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold text-foreground">
+            <Lock className="size-3.5 text-primary" /> Checkout seguro
           </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 pt-6 pb-16 md:pt-10">
+      <main className="relative mx-auto max-w-6xl px-4 pt-6 pb-16 md:pt-10">
         <Progress step={pix ? 3 : 2} />
 
         <div className="mt-6 grid items-start gap-6 lg:grid-cols-[1fr_400px] lg:gap-8">
@@ -326,7 +332,7 @@ function CheckoutPage() {
             <OrderSummary plano={plano} compact />
           </div>
 
-          <section className="rounded-3xl border border-border bg-card p-5 shadow-card sm:p-8">
+          <section className="rounded-3xl border border-border bg-card p-5 shadow-lift sm:p-8">
             {paid ? (
               <PaidState email={fields.email} />
             ) : pix ? (
@@ -337,23 +343,23 @@ function CheckoutPage() {
               <form onSubmit={onSubmit} noValidate>
                 <StepHead n={1} title="Seus dados" subtitle="Para enviar o acesso ao material." />
                 <div className="mt-5 grid gap-4">
-                  <Field id="f-name" label="Nome completo" error={errors.name}>
+                  <Field id="f-name" label="Nome completo" error={errors.name} valid={!!touched.name && !errors.name}>
                     <input id="f-name" className={inputCls(errors.name)} autoComplete="name" placeholder="Como está no seu documento" value={fields.name} onChange={(e) => setField("name", e.target.value)} onBlur={() => blur("name")} maxLength={255} />
                   </Field>
-                  <Field id="f-email" label="E-mail" hint="O acesso chega aqui" error={errors.email}>
+                  <Field id="f-email" label="E-mail" hint="O acesso chega aqui" error={errors.email} valid={!!touched.email && !errors.email}>
                     <input id="f-email" type="email" inputMode="email" className={inputCls(errors.email)} autoComplete="email" placeholder="seuemail@exemplo.com" value={fields.email} onChange={(e) => setField("email", e.target.value)} onBlur={() => blur("email")} maxLength={254} />
                   </Field>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <Field id="f-document" label="CPF ou CNPJ" error={errors.document}>
+                    <Field id="f-document" label="CPF ou CNPJ" error={errors.document} valid={!!touched.document && !errors.document}>
                       <input id="f-document" inputMode="numeric" className={inputCls(errors.document)} autoComplete="off" placeholder="000.000.000-00" value={fields.document} onChange={(e) => setField("document", e.target.value)} onBlur={() => blur("document")} maxLength={18} />
                     </Field>
-                    <Field id="f-phone" label="WhatsApp" error={errors.phone}>
+                    <Field id="f-phone" label="WhatsApp" hint="Também enviamos aqui" error={errors.phone} valid={!!touched.phone && !errors.phone}>
                       <input id="f-phone" type="tel" inputMode="tel" className={inputCls(errors.phone)} autoComplete="tel" placeholder="(11) 99999-9999" value={fields.phone} onChange={(e) => setField("phone", e.target.value)} onBlur={() => blur("phone")} maxLength={16} />
                     </Field>
                   </div>
                 </div>
 
-                <div className="my-8 h-px bg-border" />
+                <div className="my-8 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
                 <StepHead n={2} title="Pagamento" subtitle="Escolha como prefere pagar." />
                 <div className="mt-5 grid gap-3" role="radiogroup" aria-label="Forma de pagamento">
@@ -376,7 +382,7 @@ function CheckoutPage() {
                 </div>
 
                 {method === "card" && cardAvailable && (
-                  <div className="mt-4 grid gap-4 rounded-2xl border border-border bg-muted/50 p-4">
+                  <div className="mt-4 grid gap-4 rounded-2xl border border-border bg-surface p-4">
                     <Field id="c-holder" label="Nome impresso no cartão">
                       <input id="c-holder" className={inputCls()} autoComplete="cc-name" value={card.holder} onChange={(e) => setCard({ ...card, holder: e.target.value })} />
                     </Field>
@@ -397,18 +403,18 @@ function CheckoutPage() {
                 {plano === "basico" ? (
                   <OrderBump onAccept={() => setPlan("completo")} />
                 ) : (
-                  <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-secondary px-4 py-3 text-sm">
-                    <span className="flex items-center gap-2 font-bold text-secondary-foreground">
-                      <Gift className="size-4" /> Você está levando os 8 bônus
+                  <div className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm">
+                    <span className="flex items-center gap-2 font-bold text-foreground">
+                      <Gift className="size-4 text-primary" /> Você está levando os 8 bônus
                     </span>
-                    <button type="button" onClick={() => setPlan("basico")} className="text-xs font-semibold text-muted-foreground underline underline-offset-2">
+                    <button type="button" onClick={() => setPlan("basico")} className="text-xs font-semibold text-muted-foreground underline underline-offset-2 hover:text-foreground">
                       remover
                     </button>
                   </div>
                 )}
 
                 {message && (
-                  <div role="alert" className="mt-5 rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-semibold text-destructive">
+                  <div role="alert" className="mt-5 rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive">
                     {message}
                   </div>
                 )}
@@ -425,10 +431,10 @@ function CheckoutPage() {
                     </>
                   )}
                 </Button>
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs font-semibold text-muted-foreground">
-                  <span className="flex items-center gap-1"><Lock className="size-3.5" /> Dados protegidos</span>
-                  <span className="flex items-center gap-1"><ShieldCheck className="size-3.5" /> {GUARANTEE_DAYS} dias de garantia</span>
-                  <span className="flex items-center gap-1"><Zap className="size-3.5" /> Acesso imediato</span>
+                <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[11px] font-semibold text-muted-foreground">
+                  <span className="flex flex-col items-center gap-1 rounded-xl border border-border bg-surface px-2 py-2.5"><Lock className="size-4 text-primary" /> Dados protegidos</span>
+                  <span className="flex flex-col items-center gap-1 rounded-xl border border-border bg-surface px-2 py-2.5"><ShieldCheck className="size-4 text-primary" /> {GUARANTEE_DAYS} dias de garantia</span>
+                  <span className="flex flex-col items-center gap-1 rounded-xl border border-border bg-surface px-2 py-2.5"><Zap className="size-4 text-primary" /> Acesso imediato</span>
                 </div>
               </form>
             )}
@@ -440,7 +446,7 @@ function CheckoutPage() {
         </div>
       </main>
 
-      <footer className="border-t border-border bg-card py-6 text-center text-xs text-muted-foreground">
+      <footer className="relative border-t border-border bg-ink py-6 text-center text-xs text-muted-foreground">
         © {new Date().getFullYear()} Mapa Fácil da Reforma Tributária · Material educacional digital
       </footer>
     </div>
@@ -451,20 +457,41 @@ function CheckoutPage() {
 
 function inputCls(error?: string) {
   return cn(
-    "h-13 w-full rounded-xl border bg-card px-4 text-[16px] text-foreground outline-none transition-[border-color,box-shadow] placeholder:text-muted-foreground/60",
-    "focus:border-primary focus:ring-4 focus:ring-primary/15",
-    error ? "border-destructive focus:border-destructive focus:ring-destructive/15" : "border-input",
+    "h-13 w-full rounded-xl border bg-surface pr-11 pl-4 text-[16px] text-foreground outline-none transition-[border-color,box-shadow,background-color] placeholder:text-muted-foreground/50",
+    "focus:border-primary focus:bg-ink focus:ring-4 focus:ring-primary/20",
+    error ? "border-destructive focus:border-destructive focus:ring-destructive/20" : "border-input",
   );
 }
 
-function Field({ id, label, hint, error, children }: { id: string; label: string; hint?: string | undefined; error?: string | undefined; children: ReactNode }) {
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  valid,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string | undefined;
+  error?: string | undefined;
+  valid?: boolean;
+  children: ReactNode;
+}) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 flex items-baseline justify-between text-sm font-bold text-foreground">
         {label}
         {hint && <span className="text-xs font-medium text-muted-foreground">{hint}</span>}
       </label>
-      {children}
+      <div className="relative">
+        {children}
+        {valid && (
+          <span className="pointer-events-none absolute top-1/2 right-3.5 grid size-5 -translate-y-1/2 place-items-center rounded-full bg-primary text-primary-foreground animate-in zoom-in-50 duration-200">
+            <Check className="size-3" strokeWidth={4} />
+          </span>
+        )}
+      </div>
       {error && <p className="mt-1.5 text-xs font-semibold text-destructive">{error}</p>}
     </div>
   );
@@ -473,9 +500,9 @@ function Field({ id, label, hint, error, children }: { id: string; label: string
 function StepHead({ n, title, subtitle }: { n: number; title: string; subtitle: string }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink font-display font-extrabold text-ink-foreground">{n}</span>
+      <span className="grid size-9 shrink-0 place-items-center rounded-full border border-primary/40 bg-ink font-display font-extrabold text-primary shadow-glow">{n}</span>
       <div>
-        <h2 className="text-xl font-extrabold leading-tight">{title}</h2>
+        <h2 className="text-xl leading-tight font-extrabold">{title}</h2>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
     </div>
@@ -494,10 +521,10 @@ function Progress({ step }: { step: 2 | 3 }) {
           <li key={label} className="flex flex-1 items-center gap-2 last:flex-none">
             <span
               className={cn(
-                "grid size-7 shrink-0 place-items-center rounded-full",
+                "grid size-7 shrink-0 place-items-center rounded-full transition-colors",
                 done && "bg-primary text-primary-foreground",
-                active && "bg-ink text-ink-foreground",
-                !done && !active && "bg-border text-muted-foreground",
+                active && "border border-primary bg-ink text-primary shadow-glow",
+                !done && !active && "border border-border bg-surface text-muted-foreground",
               )}
             >
               {done ? <Check className="size-3.5" strokeWidth={3.5} /> : n}
@@ -536,9 +563,9 @@ function MethodOption({
       aria-disabled={disabled}
       onClick={onSelect}
       className={cn(
-        "flex w-full items-center gap-3.5 rounded-2xl border-2 p-4 text-left transition-colors",
-        selected ? "border-primary bg-secondary/60" : "border-border bg-card hover:border-foreground/25",
-        disabled && "cursor-not-allowed opacity-55 hover:border-border",
+        "flex w-full items-center gap-3.5 rounded-2xl border p-4 text-left transition-all",
+        selected ? "border-primary bg-primary/10 shadow-glow" : "border-border bg-surface hover:border-foreground/25",
+        disabled && "cursor-not-allowed opacity-50 hover:border-border",
       )}
     >
       <span className={cn("grid size-11 shrink-0 place-items-center rounded-xl", selected ? "bg-primary text-primary-foreground" : "bg-muted text-foreground")}>
@@ -547,7 +574,7 @@ function MethodOption({
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-2 font-bold">
           {title}
-          {badge && <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-primary-foreground uppercase">{badge}</span>}
+          {badge && <span className="rounded-full bg-primary/15 px-2 py-0.5 font-mono-tech text-[9.5px] font-extrabold text-primary uppercase">{badge}</span>}
         </span>
         <span className="block text-sm text-muted-foreground">{description}</span>
       </span>
@@ -571,17 +598,20 @@ function OrderBump({ onAccept }: { onAccept: () => void }) {
     <button
       type="button"
       onClick={onAccept}
-      className="group mt-6 block w-full rounded-2xl border-2 border-dashed border-highlight bg-accent/25 p-4 text-left transition-colors hover:bg-accent/40"
+      className="group relative mt-6 block w-full overflow-hidden rounded-2xl border-2 border-dashed border-highlight/70 bg-highlight/10 p-4 text-left transition-all hover:border-highlight hover:bg-highlight/15"
     >
       <span className="flex items-start gap-3">
-        <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border-2 border-foreground/40 bg-card group-hover:border-primary" />
+        <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-[6px] border-2 border-highlight bg-ink transition-colors group-hover:bg-highlight">
+          <Check className="size-3.5 text-accent-foreground opacity-0 transition-opacity group-hover:opacity-100" strokeWidth={4} />
+        </span>
         <span className="min-w-0">
-          <span className="block text-[11px] font-extrabold tracking-widest text-primary uppercase">Oferta única nesta página</span>
-          <span className="mt-1 block font-bold leading-snug">
-            Sim! Quero levar os <span className="marker">8 bônus</span> por só +{brl(upgradeDiff())}
+          <span className="block font-mono-tech text-[10px] font-extrabold text-highlight uppercase">Oferta única nesta página</span>
+          <span className="mt-1 block leading-snug font-bold">
+            Sim! Quero levar os <span className="text-highlight">8 bônus</span> por só +{brl(upgradeDiff())}
           </span>
           <span className="mt-1 block text-sm text-muted-foreground">
-            Planilha calculadora de IBS/CBS, tabela de códigos, gabarito da nota fiscal, guia de emissão e mais 4 materiais.
+            Planilha calculadora de IBS/CBS, tabela de códigos, gabarito da nota fiscal, guia de emissão e mais 4 materiais
+            {" "}(valem {brl(bonusTotal())}).
           </span>
         </span>
       </span>
@@ -596,11 +626,14 @@ function OrderSummary({ plano, compact }: { plano: PlanId; compact?: boolean }) 
       <div className="flex items-center gap-4 rounded-3xl border border-border bg-card p-3 shadow-card">
         <img src={productAsset} alt="Mapa Fácil da Reforma Tributária" className="size-20 shrink-0 rounded-2xl object-cover" />
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-extrabold tracking-wider text-primary uppercase">{plan.name}</p>
+          <p className="font-mono-tech text-[10px] font-extrabold text-primary uppercase">{plan.name}</p>
           <p className="truncate font-bold">{plan.title}</p>
           <p className="mt-0.5 flex items-baseline gap-2">
             <span className="font-display text-xl font-extrabold">{brl(plan.price)}</span>
             <span className="text-xs text-muted-foreground line-through">{brl(plan.fromPrice)}</span>
+            <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-extrabold text-primary">
+              −{Math.round(((plan.fromPrice - plan.price) / plan.fromPrice) * 100)}%
+            </span>
           </p>
         </div>
       </div>
@@ -608,15 +641,28 @@ function OrderSummary({ plano, compact }: { plano: PlanId; compact?: boolean }) 
   }
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-card">
-        <img src={productAsset} alt="Prévia dos materiais do Mapa Fácil" className="aspect-[4/3] w-full object-cover" />
+      <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
+        <div className="relative">
+          <img src={productAsset} alt="Prévia dos materiais do Mapa Fácil" className="aspect-[4/3] w-full object-cover" />
+          <div className="scan-line" />
+        </div>
         <div className="p-6">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold tracking-wider text-muted-foreground uppercase">Resumo do pedido</span>
-            <span className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-extrabold text-secondary-foreground">100% DIGITAL</span>
+            <span className="font-mono-tech text-[10px] font-extrabold text-muted-foreground uppercase">Resumo do pedido</span>
+            <span className="rounded-full bg-primary/15 px-2.5 py-1 font-mono-tech text-[9.5px] font-extrabold text-primary">100% DIGITAL</span>
           </div>
           <h3 className="mt-3 text-xl font-extrabold">{plan.title}</h3>
           <p className="text-sm text-muted-foreground">{plan.name} · {plan.description}</p>
+          {plano === "completo" && (
+            <ul className="mt-4 space-y-1.5 text-[13px]">
+              {BONUSES.map((b) => (
+                <li key={b.title} className="flex items-start gap-2 text-muted-foreground">
+                  <Check className="mt-0.5 size-3.5 shrink-0 text-primary" strokeWidth={3} />
+                  {b.title}
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="mt-5 space-y-2 border-t border-border pt-4 text-sm">
             <Row label="Valor original"><span className="line-through">{brl(plan.fromPrice)}</span></Row>
             <Row label="Desconto"><span className="font-bold text-primary">−{brl(plan.fromPrice - plan.price)}</span></Row>
@@ -624,7 +670,7 @@ function OrderSummary({ plano, compact }: { plano: PlanId; compact?: boolean }) 
           </div>
           <div className="mt-4 flex items-end justify-between border-t border-border pt-4">
             <span className="font-bold">Total</span>
-            <span className="font-display text-3xl font-extrabold">{brl(plan.price)}</span>
+            <span className="font-display text-3xl font-extrabold text-gradient">{brl(plan.price)}</span>
           </div>
           <p className="mt-1 text-right text-xs text-muted-foreground">Pagamento único · sem mensalidade</p>
         </div>
@@ -650,7 +696,7 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 function Trust({ icon, title, text }: { icon: ReactNode; title: string; text: string }) {
   return (
     <div className="flex gap-3">
-      <span className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-primary">{icon}</span>
+      <span className="grid size-8 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 text-primary">{icon}</span>
       <div className="text-sm">
         <p className="font-bold">{title}</p>
         <p className="text-muted-foreground">{text}</p>
@@ -670,11 +716,11 @@ function PixPanel({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-3 rounded-2xl bg-secondary p-4">
+      <div className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/10 p-4">
         <CheckCircle2 className="size-7 shrink-0 text-primary" />
         <div>
-          <h2 className="text-lg font-extrabold leading-tight">Pix gerado! Falta só pagar.</h2>
-          <p className="text-sm text-secondary-foreground">Valor: <strong>{brl(pix.amount)}</strong></p>
+          <h2 className="text-lg leading-tight font-extrabold">Pix gerado! Falta só pagar.</h2>
+          <p className="text-sm text-muted-foreground">Valor: <strong className="text-foreground">{brl(pix.amount)}</strong></p>
         </div>
       </div>
 
@@ -685,19 +731,20 @@ function PixPanel({
       <ol className="mt-6 space-y-3 text-sm">
         {["Abra o app do seu banco e escolha Pix", "Selecione “Pix Copia e Cola” e cole o código", "Confirme o pagamento — o acesso é liberado em seguida"].map((t, i) => (
           <li key={t} className="flex items-center gap-3">
-            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-ink text-xs font-extrabold text-ink-foreground">{i + 1}</span>
+            <span className="grid size-6 shrink-0 place-items-center rounded-full border border-primary/40 bg-ink text-xs font-extrabold text-primary">{i + 1}</span>
             {t}
           </li>
         ))}
       </ol>
 
-      <div className="mt-6 grid gap-5 rounded-2xl border border-border bg-muted/50 p-4 sm:grid-cols-[180px_1fr] sm:items-center">
-        <div className="mx-auto w-44 rounded-xl bg-card p-2 shadow-card sm:w-full">
+      <div className="mt-6 grid gap-5 rounded-2xl border border-border bg-surface p-4 sm:grid-cols-[180px_1fr] sm:items-center">
+        <div className="relative mx-auto w-44 overflow-hidden rounded-xl bg-foreground p-2 shadow-glow sm:w-full">
           {pix.qr ? (
             <img src={pix.qr} alt="QR Code para pagamento Pix" className="aspect-square w-full" />
           ) : (
-            <p className="p-3 text-center text-xs text-muted-foreground">Use o código copia e cola ao lado.</p>
+            <p className="p-3 text-center text-xs text-background">Use o código copia e cola ao lado.</p>
           )}
+          {pix.qr && <div className="scan-line" />}
         </div>
         <div>
           <p className="text-xs font-bold text-muted-foreground">Está no computador? Escaneie o QR Code. Ou copie o código:</p>
@@ -707,13 +754,13 @@ function PixPanel({
             rows={3}
             value={pix.code}
             onFocus={(e) => e.currentTarget.select()}
-            className="mt-2 w-full resize-none rounded-xl border border-input bg-card p-3 font-mono text-xs break-all text-foreground"
+            className="mt-2 w-full resize-none rounded-xl border border-input bg-ink p-3 font-mono text-xs break-all text-foreground"
           />
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm font-semibold text-muted-foreground" aria-live="polite">
-        <Loader2 className="size-4 animate-spin text-primary" />
+      <div className="mt-5 flex items-center justify-center gap-2.5 rounded-2xl border border-border bg-surface px-4 py-3 text-sm font-semibold text-muted-foreground" aria-live="polite">
+        <LiveDot />
         Aguardando confirmação do pagamento…
       </div>
     </div>
@@ -723,7 +770,8 @@ function PixPanel({
 function PaidState({ email }: { email: string }) {
   return (
     <div className="py-6 text-center">
-      <span className="mx-auto grid size-20 place-items-center rounded-full bg-primary text-primary-foreground shadow-cta">
+      <span className="relative mx-auto grid size-20 place-items-center rounded-full bg-cta-gradient text-primary-foreground shadow-cta animate-in zoom-in-50 duration-500">
+        <span className="absolute inset-0 rounded-full animate-pulse-ring" />
         <Check className="size-10" strokeWidth={3} />
       </span>
       <h2 className="mt-6 text-3xl font-extrabold">Pagamento confirmado!</h2>
@@ -732,7 +780,7 @@ function PaidState({ email }: { email: string }) {
       </p>
       <div className="mx-auto mt-6 grid max-w-sm gap-2 text-left text-sm">
         {email && (
-          <p className="flex items-center gap-2 rounded-xl bg-muted px-4 py-3"><Mail className="size-4 text-primary" /> <span><strong>Produto entregue no seu e-mail:</strong> {email}</span></p>
+          <p className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-3"><Mail className="size-4 shrink-0 text-primary" /> <span><strong>Produto entregue no seu e-mail:</strong> {email}</span></p>
         )}
       </div>
     </div>

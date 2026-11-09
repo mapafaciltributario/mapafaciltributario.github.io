@@ -28,14 +28,10 @@ import {
 
 import { Logo } from "@/components/brand/Logo";
 import { Reveal } from "@/components/landing/Reveal";
+import { CountUp, LiveDot, Spotlight } from "@/components/landing/Effects";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BONUSES, GUARANTEE_DAYS, PLANS, bonusTotal, brl, savings } from "@/lib/plans";
 import bonus01 from "@/assets/bonus-01-glossario.jpg";
 import bonus02 from "@/assets/bonus-02-checklist.jpg";
@@ -45,7 +41,7 @@ import bonus05 from "@/assets/bonus-05-tabela-codigos.jpg";
 import bonus06 from "@/assets/bonus-06-calculadora.jpg";
 import bonus07 from "@/assets/bonus-07-gabarito-nota.jpg";
 import bonus08 from "@/assets/bonus-08-guia-emissao.jpg";
-import heroAsset from "@/assets/mapa-facil-mesa.jpg";
+import heroAsset from "@/assets/mapa-facil-hero-dark.jpg";
 import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg";
 
 export const Route = createFileRoute("/")({
@@ -74,12 +70,13 @@ const completo = PLANS.completo;
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-x-clip bg-background">
       <TopBar />
       <Header />
       <main>
         <Hero />
-        <SpecsStrip />
+        <Stats />
+        <Ticker />
         <Problem />
         <Features />
         <Contents />
@@ -92,6 +89,7 @@ function Index() {
         <FinalCta />
       </main>
       <Footer />
+      <StickyCta />
     </div>
   );
 }
@@ -100,12 +98,16 @@ function Index() {
 
 function TopBar() {
   return (
-    <div className="bg-ink text-ink-foreground">
-      <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-[12.5px] font-semibold">
-        <Zap className="size-3.5 text-highlight" />
-        Acesso imediato após a compra
-        <span className="text-ink-muted">·</span>
-        {GUARANTEE_DAYS} dias de garantia
+    <div className="relative border-b border-border bg-ink">
+      <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-[12px] font-semibold text-muted-foreground">
+        <LiveDot />
+        <span>
+          <span className="text-foreground">Oferta de lançamento:</span> de{" "}
+          <span className="line-through">{brl(completo.fromPrice)}</span> por{" "}
+          <span className="font-extrabold text-primary">{brl(completo.price)}</span>
+        </span>
+        <span className="hidden text-border sm:inline">|</span>
+        <span className="hidden sm:inline">Acesso imediato · {GUARANTEE_DAYS} dias de garantia</span>
       </div>
     </div>
   );
@@ -113,17 +115,19 @@ function TopBar() {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Logo />
         <nav className="hidden items-center gap-7 text-sm font-semibold text-muted-foreground md:flex">
-          <a href="#conteudo" className="hover:text-foreground">Conteúdo</a>
-          <a href="#bonus" className="hover:text-foreground">Bônus</a>
-          <a href="#planos" className="hover:text-foreground">Planos</a>
-          <a href="#duvidas" className="hover:text-foreground">Dúvidas</a>
+          <a href="#conteudo" className="transition-colors hover:text-foreground">Conteúdo</a>
+          <a href="#bonus" className="transition-colors hover:text-foreground">Bônus</a>
+          <a href="#planos" className="transition-colors hover:text-foreground">Planos</a>
+          <a href="#duvidas" className="transition-colors hover:text-foreground">Dúvidas</a>
         </nav>
-        <Button asChild variant="ink" size="sm" className="h-10 rounded-xl px-4">
-          <a href="#planos">Quero o meu</a>
+        <Button asChild variant="cta" size="sm" className="h-10 rounded-xl px-4 text-[13px]">
+          <a href="#planos">
+            Quero o meu <ArrowRight />
+          </a>
         </Button>
       </div>
     </header>
@@ -133,36 +137,57 @@ function Header() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="paper-grid pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 pb-14 md:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pt-20 lg:pb-24">
+      <div className="tech-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]" />
+      <div className="aurora animate-aurora pointer-events-none absolute -inset-x-20 -top-20 h-[640px]" />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 pb-16 md:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pt-20 lg:pb-24">
         <div>
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-secondary px-3.5 py-1.5 text-xs font-bold text-secondary-foreground">
-              <span className="size-1.5 rounded-full bg-primary" />
+            <span className="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono-tech text-[10.5px] font-bold text-foreground uppercase">
+              <LiveDot />
               IBS · CBS · Imposto Seletivo · Transição
             </span>
           </Reveal>
           <Reveal delay={60}>
-            <h1 className="mt-5 text-[2.6rem] leading-[1.02] font-extrabold text-foreground sm:text-6xl lg:text-[4.2rem]">
-              A Reforma Tributária, <span className="marker">finalmente fácil</span> de entender.
+            <h1 className="mt-5 text-[2.55rem] leading-[1.02] font-extrabold text-foreground sm:text-6xl lg:text-[4.1rem]">
+              A Reforma Tributária, <span className="text-gradient">finalmente fácil</span> de entender.
             </h1>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted-foreground sm:text-lg">
               Mapas mentais, checklist e linha do tempo que organizam as principais mudanças em um material{" "}
               <strong className="text-foreground">simples, visual e direto ao ponto</strong> — sem leis extensas nem lives longas.
             </p>
           </Reveal>
-          <Reveal delay={180} className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+
+          <Reveal delay={170}>
+            <div className="glass mt-7 flex items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:max-w-md">
+              <div>
+                <p className="font-mono-tech text-[10px] font-bold text-muted-foreground uppercase">Plano Completo + 8 bônus</p>
+                <p className="mt-0.5 flex items-baseline gap-2">
+                  <span className="text-sm text-muted-foreground line-through">{brl(completo.fromPrice)}</span>
+                  <span className="font-display text-2xl font-extrabold text-foreground">{brl(completo.price)}</span>
+                </p>
+              </div>
+              <span className="rounded-full bg-secondary px-3 py-1 text-xs font-extrabold text-secondary-foreground">
+                −{Math.round((savings(completo) / completo.fromPrice) * 100)}%
+              </span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={220} className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button asChild variant="cta" size="2xl" className="w-full sm:w-auto">
               <a href="#planos">
                 Quero entender a Reforma
                 <ArrowRight />
               </a>
             </Button>
+            <Button asChild variant="glass" size="xl" className="hidden sm:inline-flex">
+              <a href="#conteudo">Ver o conteúdo</a>
+            </Button>
           </Reveal>
-          <Reveal delay={240}>
-            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
+          <Reveal delay={260}>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
               <li className="flex items-center gap-1.5"><ShieldCheck className="size-4 text-primary" />{GUARANTEE_DAYS} dias de garantia</li>
               <li className="flex items-center gap-1.5"><Zap className="size-4 text-primary" />Acesso imediato</li>
               <li className="flex items-center gap-1.5"><Lock className="size-4 text-primary" />Compra segura via Pix</li>
@@ -171,23 +196,30 @@ function Hero() {
         </div>
 
         <Reveal delay={120} className="relative">
-          <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-highlight/30 blur-3xl" />
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
-            <img
-              src={heroAsset}
-              alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo sobre uma mesa"
-              width={1600}
-              height={1200}
-              className="aspect-[4/3] w-full object-cover"
-              fetchPriority="high"
-            />
+          <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-primary/20 blur-3xl" />
+          <div className="glow-ring relative rounded-[1.75rem]">
+            <div className="relative overflow-hidden rounded-[1.75rem] bg-ink">
+              <img
+                src={heroAsset}
+                alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo"
+                width={1200}
+                height={1200}
+                className="aspect-square w-full object-cover"
+                fetchPriority="high"
+              />
+              <div className="scan-line" />
+            </div>
           </div>
-          <div className="animate-float absolute -bottom-5 left-3 flex items-center gap-2.5 rounded-2xl border border-border bg-card px-3.5 py-2.5 shadow-lift sm:left-6">
-            <span className="grid size-9 place-items-center rounded-xl bg-secondary text-primary"><Files className="size-5" /></span>
-            <span className="text-xs leading-tight"><strong className="block text-sm text-foreground">PDF + planilhas</strong><span className="text-muted-foreground">celular, PC ou impresso</span></span>
+          <div className="animate-float absolute -bottom-5 left-3 flex items-center gap-2.5 rounded-2xl border border-border bg-card/95 px-3.5 py-2.5 shadow-lift backdrop-blur sm:left-6">
+            <span className="grid size-9 place-items-center rounded-xl bg-primary/15 text-primary"><Files className="size-5" /></span>
+            <span className="text-xs leading-tight">
+              <strong className="block text-sm text-foreground">PDF + planilhas</strong>
+              <span className="text-muted-foreground">celular, PC ou impresso</span>
+            </span>
           </div>
-          <div className="absolute -top-4 right-3 rotate-3 rounded-xl bg-accent px-3 py-1.5 font-display text-sm font-extrabold text-accent-foreground shadow-card sm:right-6">
-            Do complexo ao simples ✓
+          <div className="animate-float-delayed absolute -top-4 right-3 flex items-center gap-2 rounded-2xl border border-border bg-card/95 px-3 py-2 shadow-lift backdrop-blur sm:right-6">
+            <Gift className="size-4 text-highlight" />
+            <span className="text-xs font-extrabold text-foreground">8 bônus inclusos</span>
           </div>
         </Reveal>
       </div>
@@ -195,24 +227,46 @@ function Hero() {
   );
 }
 
-function SpecsStrip() {
+function Stats() {
   const items = [
-    { icon: Brain, label: "Mapas mentais prontos" },
-    { icon: MonitorSmartphone, label: "Celular e computador" },
-    { icon: Zap, label: "Acesso na hora" },
-    { icon: ShieldCheck, label: `${GUARANTEE_DAYS} dias de garantia` },
+    { n: 12, suffix: "", label: "temas organizados" },
+    { n: 8, suffix: "", label: "bônus práticos" },
+    { n: GUARANTEE_DAYS, suffix: " dias", label: "de garantia" },
+    { n: 100, suffix: "%", label: "digital e imediato" },
   ];
   return (
-    <section className="border-y border-border bg-card">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-border md:grid-cols-4">
-        {items.map(({ icon: Icon, label }) => (
-          <div key={label} className="flex items-center gap-3 bg-card px-4 py-4 sm:justify-center">
-            <Icon className="size-5 shrink-0 text-primary" />
-            <span className="text-[13px] font-bold text-foreground">{label}</span>
-          </div>
+    <section className="relative border-y border-border bg-surface">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
+        {items.map(({ n, suffix, label }, i) => (
+          <Reveal
+            key={label}
+            delay={i * 60}
+            className="border-border px-4 py-6 text-center odd:border-r md:border-r md:last:border-r-0 [&:nth-child(-n+2)]:border-b md:[&:nth-child(-n+2)]:border-b-0"
+          >
+            <p className="font-display text-3xl font-extrabold text-gradient sm:text-4xl">
+              <CountUp to={n} suffix={suffix} />
+            </p>
+            <p className="mt-1 font-mono-tech text-[10px] font-bold text-muted-foreground uppercase">{label}</p>
+          </Reveal>
         ))}
       </div>
     </section>
+  );
+}
+
+function Ticker() {
+  const items = [...CONTENTS, ...CONTENTS];
+  return (
+    <div className="relative overflow-hidden border-b border-border bg-ink py-3 fade-x">
+      <div className="motion-safe-marquee flex w-max gap-8 pr-8">
+        {items.map((c, i) => (
+          <span key={`${c}-${i}`} className="flex items-center gap-2 font-mono-tech text-[11px] font-bold whitespace-nowrap text-muted-foreground uppercase">
+            <span className="size-1 rounded-full bg-primary" />
+            {c}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -234,23 +288,25 @@ function Problem() {
       <Reveal className="mx-auto max-w-2xl text-center">
         <SectionEyebrow icon={Sparkles}>Menos confusão. Mais clareza.</SectionEyebrow>
         <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-          Quanto tempo você ainda vai gastar tentando entender a Reforma em <span className="marker">conteúdos soltos?</span>
+          Quanto tempo você ainda vai gastar tentando entender a Reforma em <span className="text-gradient">conteúdos soltos?</span>
         </h2>
       </Reveal>
       <div className="mt-12 grid gap-4 md:grid-cols-2">
-        <Reveal className="rounded-3xl border border-border bg-muted p-6 sm:p-8">
-          <p className="text-xs font-extrabold tracking-[0.16em] text-muted-foreground uppercase">Sem o Mapa Fácil</p>
+        <Reveal className="rounded-3xl border border-destructive/20 bg-destructive/5 p-6 sm:p-8">
+          <p className="font-mono-tech text-[11px] font-bold text-destructive uppercase">Sem o Mapa Fácil</p>
           <ul className="mt-5 space-y-4">
             {pains.map((p) => (
               <li key={p} className="flex gap-3 text-[15px] text-muted-foreground">
-                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-destructive/10 text-destructive"><X className="size-3.5" strokeWidth={3} /></span>
+                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-destructive/15 text-destructive">
+                  <X className="size-3.5" strokeWidth={3} />
+                </span>
                 {p}
               </li>
             ))}
           </ul>
         </Reveal>
-        <Reveal delay={80} className="rounded-3xl border-2 border-primary/30 bg-card p-6 shadow-card sm:p-8">
-          <p className="text-xs font-extrabold tracking-[0.16em] text-primary uppercase">Com o Mapa Fácil</p>
+        <Reveal delay={80} className="rounded-3xl border border-primary/30 bg-primary/5 p-6 shadow-glow sm:p-8">
+          <p className="font-mono-tech text-[11px] font-bold text-primary uppercase">Com o Mapa Fácil</p>
           <ul className="mt-5 space-y-4">
             {gains.map((g) => (
               <li key={g} className="flex gap-3 text-[15px] font-semibold text-foreground">
@@ -275,21 +331,26 @@ function Features() {
     { icon: FolderOpen, title: "Arquivos em pastas", text: "Tudo separado para estudar, revisar e consultar sempre que precisar." },
   ];
   return (
-    <section className="relative overflow-hidden bg-ink-gradient text-ink-foreground">
-      <div className="ink-grid pointer-events-none absolute inset-0" />
+    <section className="relative overflow-hidden border-y border-border bg-ink">
+      <div className="tech-grid pointer-events-none absolute inset-0 fade-b" />
       <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
         <Reveal className="max-w-2xl">
-          <SectionEyebrow icon={Layers} tone="light">Clareza em cada tema</SectionEyebrow>
+          <SectionEyebrow icon={Layers}>Clareza em cada tema</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-            Tudo fica mais fácil quando está <span className="text-highlight">organizado visualmente</span>
+            Tudo fica mais fácil quando está <span className="text-gradient">organizado visualmente</span>
           </h2>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map(({ icon: Icon, title, text }, i) => (
-            <Reveal key={title} delay={i * 60} className="rounded-3xl border border-ink-foreground/10 bg-ink-foreground/5 p-6 backdrop-blur-sm">
-              <span className="grid size-12 place-items-center rounded-2xl bg-highlight text-ink"><Icon className="size-6" /></span>
-              <h3 className="mt-5 text-xl font-bold">{title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{text}</p>
+            <Reveal key={title} delay={i * 70}>
+              <Spotlight className="glass h-full rounded-3xl p-6 transition-transform duration-300 hover:-translate-y-1">
+                <span className="relative grid size-12 place-items-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
+                  <Icon className="size-6" />
+                </span>
+                <p className="relative mt-5 font-mono-tech text-[10px] font-bold text-muted-foreground">{String(i + 1).padStart(2, "0")} /</p>
+                <h3 className="relative mt-1 text-xl font-bold">{title}</h3>
+                <p className="relative mt-2 text-[15px] leading-relaxed text-muted-foreground">{text}</p>
+              </Spotlight>
             </Reveal>
           ))}
         </div>
@@ -327,27 +388,34 @@ function Contents() {
         <Reveal className="order-2 lg:order-1">
           <SectionEyebrow icon={BookOpen}>O que você vai receber</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-            Estude no celular, no computador <span className="marker">ou imprima</span>
+            Estude no celular, no computador <span className="text-gradient">ou imprima</span>
           </h2>
-          <ul className="mt-8 grid gap-x-6 gap-y-3.5 sm:grid-cols-2">
-            {CONTENTS.map((c) => (
-              <li key={c} className="flex gap-3 text-[15px] font-semibold text-foreground">
-                <Tick />
+          <ul className="mt-8 grid gap-2.5 sm:grid-cols-2">
+            {CONTENTS.map((c, i) => (
+              <li key={c} className="group flex items-center gap-3 rounded-xl border border-border bg-card/60 px-3.5 py-3 text-[14.5px] font-semibold text-foreground transition-colors hover:border-primary/40">
+                <span className="font-mono-tech text-[10px] font-bold text-primary">{String(i + 1).padStart(2, "0")}</span>
                 {c}
               </li>
             ))}
           </ul>
         </Reveal>
         <Reveal delay={100} className="order-1 lg:order-2">
-          <div className="overflow-hidden rounded-3xl shadow-lift">
-            <img
-              src={devicesAsset}
-              alt="Mapa mental do IBS em um tablet e a capa do Mapa Fácil em um celular"
-              width={1200}
-              height={1200}
-              loading="lazy"
-              className="aspect-square w-full object-cover"
-            />
+          <div className="relative">
+            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-tech/15 blur-3xl" />
+            <div className="overflow-hidden rounded-3xl border border-border shadow-lift">
+              <img
+                src={devicesAsset}
+                alt="Mapa mental do IBS em um tablet e a capa do Mapa Fácil em um celular"
+                width={1200}
+                height={1200}
+                loading="lazy"
+                className="aspect-square w-full object-cover"
+              />
+            </div>
+            <div className="glass absolute right-4 bottom-4 flex items-center gap-2 rounded-xl px-3 py-2">
+              <MonitorSmartphone className="size-4 text-tech" />
+              <span className="text-xs font-bold">Funciona em qualquer tela</span>
+            </div>
           </div>
         </Reveal>
       </div>
@@ -367,7 +435,7 @@ function Audience() {
     ["Traduzir termos técnicos", "Consulte conceitos importantes em linguagem simples."],
   ];
   return (
-    <section className="border-y border-border bg-muted/60">
+    <section className="border-y border-border bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
         <Reveal className="max-w-2xl">
           <SectionEyebrow icon={Star}>Feito para o seu dia a dia</SectionEyebrow>
@@ -376,10 +444,12 @@ function Audience() {
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map(([title, text], i) => (
-            <Reveal key={title} delay={(i % 3) * 60} className="rounded-3xl border border-border bg-card p-6 shadow-card">
-              <span className="font-display text-3xl font-extrabold text-primary/30">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-2 text-lg font-bold leading-snug">{title}</h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{text}</p>
+            <Reveal key={title} delay={(i % 3) * 60}>
+              <Spotlight className="h-full rounded-3xl border border-border bg-card p-6 shadow-card">
+                <span className="relative font-display text-3xl font-extrabold text-primary/40">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="relative mt-2 text-lg leading-snug font-bold">{title}</h3>
+                <p className="relative mt-2 text-[15px] leading-relaxed text-muted-foreground">{text}</p>
+              </Spotlight>
             </Reveal>
           ))}
         </div>
@@ -413,84 +483,85 @@ function Bonuses() {
   }, [api]);
 
   return (
-    <section id="bonus" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 md:py-28">
-      <Reveal className="mx-auto max-w-2xl text-center">
-        <SectionEyebrow icon={Gift}>E não para por aí</SectionEyebrow>
-        <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-          <span className="marker">8 bônus</span> no Plano Completo
-        </h2>
-        <p className="mt-3 text-muted-foreground">
-          Ferramentas práticas para aplicar a Reforma na rotina. Separados, custariam{" "}
-          <strong className="text-foreground">{brl(bonusTotal())}</strong> — com o Plano Completo, saem de graça.
-        </p>
-      </Reveal>
-      <Reveal className="fade-x -mx-4 mt-12 sm:mx-0">
-        <Carousel
-          opts={{ loop: true, align: "start", dragFree: true }}
-          plugins={[autoScroll.current]}
-          setApi={setApi}
-          aria-label="Bônus passando na tela"
-        >
-          <CarouselContent className="py-2">
-        {BONUSES.map(({ title, text, value }, i) => {
-          const { icon: Icon, img } = BONUS_MEDIA[i % BONUS_MEDIA.length]!;
-          return (
-            <CarouselItem key={title} className="basis-[78%] sm:basis-[45%] lg:basis-[30%] xl:basis-[24%]">
-            <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-shadow hover:shadow-lift">
-              <div className="relative aspect-square overflow-hidden bg-secondary">
-                <img
-                  src={img}
-                  alt={`Mockup do bônus ${title}`}
-                  width={1024}
-                  height={1024}
-                  loading="lazy"
-                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <span className="absolute top-3 left-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-extrabold tracking-wider text-accent-foreground shadow-card">
-                  BÔNUS {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <div className="flex items-start gap-3">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><Icon className="size-4" /></span>
-                  <h3 className="text-[16px] font-bold leading-snug">{title}</h3>
-                </div>
-                <p className="mt-2 mb-4 text-sm leading-relaxed text-muted-foreground">{text}</p>
-                <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
-                  <span className="text-sm text-muted-foreground">
-                    De <span className="font-bold line-through decoration-destructive/70">{brl(value)}</span>
-                  </span>
-                  <span className="rounded-full bg-success px-3 py-1 text-xs font-extrabold tracking-wider text-primary-foreground">
-                    GRÁTIS
-                  </span>
-                </div>
-              </div>
-            </div>
-            </CarouselItem>
-          );
-        })}
-          </CarouselContent>
-        </Carousel>
-      </Reveal>
-      <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver com calma</p>
+    <section id="bonus" className="relative scroll-mt-20 overflow-hidden py-20 md:py-28">
+      <div className="aurora pointer-events-none absolute inset-x-0 top-10 h-96 opacity-60" />
+      <div className="relative mx-auto max-w-6xl px-4">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <SectionEyebrow icon={Gift}>E não para por aí</SectionEyebrow>
+          <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
+            <span className="text-gradient">8 bônus</span> no Plano Completo
+          </h2>
+          <p className="mt-3 text-muted-foreground">
+            Ferramentas práticas para aplicar a Reforma na rotina. Separados, custariam{" "}
+            <strong className="text-foreground">{brl(bonusTotal())}</strong> — com o Plano Completo, saem de graça.
+          </p>
+        </Reveal>
+        <Reveal className="fade-x -mx-4 mt-12 sm:mx-0">
+          <Carousel
+            opts={{ loop: true, align: "start", dragFree: true }}
+            plugins={[autoScroll.current]}
+            setApi={setApi}
+            aria-label="Bônus passando na tela"
+          >
+            <CarouselContent className="py-2">
+              {BONUSES.map(({ title, text, value }, i) => {
+                const { icon: Icon, img } = BONUS_MEDIA[i % BONUS_MEDIA.length]!;
+                return (
+                  <CarouselItem key={title} className="basis-[78%] sm:basis-[45%] lg:basis-[30%] xl:basis-[24%]">
+                    <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
+                      <div className="relative aspect-square overflow-hidden bg-muted">
+                        <img
+                          src={img}
+                          alt={`Mockup do bônus ${title}`}
+                          width={1024}
+                          height={1024}
+                          loading="lazy"
+                          className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <span className="absolute top-3 left-3 rounded-full bg-accent px-2.5 py-1 font-mono-tech text-[10px] font-extrabold text-accent-foreground shadow-card">
+                          BÔNUS {String(i + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <div className="flex flex-1 flex-col p-5">
+                        <div className="flex items-start gap-3">
+                          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="size-4" /></span>
+                          <h3 className="text-[16px] leading-snug font-bold">{title}</h3>
+                        </div>
+                        <p className="mt-2 mb-4 text-sm leading-relaxed text-muted-foreground">{text}</p>
+                        <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
+                          <span className="text-sm text-muted-foreground">
+                            De <span className="font-bold line-through decoration-destructive/70">{brl(value)}</span>
+                          </span>
+                          <span className="rounded-full bg-primary px-3 py-1 text-xs font-extrabold tracking-wider text-primary-foreground">GRÁTIS</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+          </Carousel>
+        </Reveal>
+        <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver com calma</p>
 
-      <Reveal className="mx-auto mt-10 max-w-3xl rounded-[2rem] border-2 border-dashed border-primary/30 bg-card p-6 text-center shadow-card sm:p-8">
-        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Valor total dos 8 bônus</p>
-        <p className="mt-1 font-display text-3xl font-extrabold text-muted-foreground line-through decoration-destructive/70 sm:text-4xl">
-          {brl(bonusTotal())}
-        </p>
-        <p className="mt-3 text-xl font-extrabold sm:text-2xl">
-          Hoje: <span className="marker-green">R$ 0,00</span> ao adquirir o Plano Completo
-        </p>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Você leva o material principal + todos os bônus por apenas {brl(completo.price)}.
-        </p>
-        <Button asChild variant="cta" size="xl" className="mt-6 w-full sm:w-auto">
-          <Link to="/checkout" search={{ plano: "completo" }}>
-            Quero os 8 bônus grátis <ArrowRight />
-          </Link>
-        </Button>
-      </Reveal>
+        <Reveal className="glass mx-auto mt-10 max-w-3xl rounded-[2rem] p-6 text-center sm:p-8">
+          <p className="font-mono-tech text-[11px] font-bold text-muted-foreground uppercase">Valor total dos 8 bônus</p>
+          <p className="mt-1 font-display text-3xl font-extrabold text-muted-foreground line-through decoration-destructive/70 sm:text-4xl">
+            {brl(bonusTotal())}
+          </p>
+          <p className="mt-3 text-xl font-extrabold sm:text-2xl">
+            Hoje: <span className="text-gradient">R$ 0,00</span> ao adquirir o Plano Completo
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Você leva o material principal + todos os bônus por apenas {brl(completo.price)}.
+          </p>
+          <Button asChild variant="cta" size="xl" className="mt-6 w-full sm:w-auto">
+            <Link to="/checkout" search={{ plano: "completo" }}>
+              Quero os 8 bônus grátis <ArrowRight />
+            </Link>
+          </Button>
+        </Reveal>
+      </div>
     </section>
   );
 }
@@ -499,77 +570,85 @@ function Bonuses() {
 
 function Pricing() {
   return (
-    <section id="planos" className="relative scroll-mt-16 overflow-hidden bg-ink-gradient text-ink-foreground">
-      <div className="ink-grid pointer-events-none absolute inset-0" />
+    <section id="planos" className="relative scroll-mt-16 overflow-hidden border-y border-border bg-ink">
+      <div className="tech-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
+      <div className="aurora animate-aurora pointer-events-none absolute inset-0 opacity-70" />
       <div className="relative mx-auto max-w-5xl px-4 py-20 md:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon={Sparkles} tone="light">Seu próximo passo</SectionEyebrow>
+          <SectionEyebrow icon={Sparkles}>Seu próximo passo</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">Escolha a opção ideal para você</h2>
-          <p className="mt-3 text-ink-muted">Pagamento único. Sem mensalidades.</p>
+          <p className="mt-3 text-muted-foreground">Pagamento único. Sem mensalidades. Acesso na hora.</p>
         </Reveal>
 
-        <div className="mt-12 grid items-start gap-5 md:grid-cols-[1fr_1.15fr]">
+        <div className="mt-14 grid items-start gap-6 md:grid-cols-[1fr_1.15fr]">
           {/* Completo first on mobile */}
           <Reveal className="order-1 md:order-2">
-            <div className="relative rounded-[2rem] bg-card p-6 text-card-foreground shadow-lift ring-4 ring-highlight sm:p-8">
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-highlight px-4 py-1.5 text-xs font-extrabold tracking-wider whitespace-nowrap text-ink shadow-card">
-                ★ PLANO COMPLETO · 8 BÔNUS
-              </span>
-              <div className="flex items-start justify-between gap-4 pt-2">
-                <div>
-                  <h3 className="text-2xl font-extrabold">{completo.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">Material principal + 8 bônus</p>
+            <div className="glow-ring relative rounded-[2rem]">
+              <div className="relative rounded-[2rem] bg-card p-6 sm:p-8">
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-cta-gradient px-4 py-1.5 font-mono-tech text-[10.5px] font-extrabold whitespace-nowrap text-primary-foreground shadow-cta">
+                  ★ MAIS ESCOLHIDO · 8 BÔNUS
+                </span>
+                <div className="flex items-start justify-between gap-4 pt-2">
+                  <div>
+                    <h3 className="text-2xl font-extrabold">{completo.name}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">Material principal + 8 bônus</p>
+                  </div>
+                  <span className="grid size-12 shrink-0 place-items-center rounded-2xl border border-primary/30 bg-primary/10 text-primary"><Gift className="size-6" /></span>
                 </div>
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-secondary text-primary"><Gift className="size-6" /></span>
+                <PriceBlock plan={completo} />
+                <Button asChild variant="cta" size="2xl" className="mt-6 w-full">
+                  <Link to="/checkout" search={{ plano: "completo" }}>
+                    Quero o Plano Completo <ArrowRight />
+                  </Link>
+                </Button>
+                <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                  <Lock className="size-3.5" /> Pagamento seguro · liberação imediata
+                </p>
+                <ul className="mt-6 space-y-3 border-t border-border pt-6">
+                  <li className="flex gap-3 text-[15px] font-bold"><Tick />Mapa Fácil da Reforma Tributária completo</li>
+                  {BONUSES.map((b, i) => (
+                    <li key={b.title} className="flex gap-3 text-[14.5px]">
+                      <Tick />
+                      <span className="flex-1">
+                        <span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}
+                      </span>
+                      <span className="shrink-0 font-mono-tech text-[10px] font-extrabold text-primary">INCLUSO</span>
+                    </li>
+                  ))}
+                </ul>
+                <GuaranteeNote />
               </div>
-              <PriceBlock plan={completo} />
-              <Button asChild variant="cta" size="2xl" className="mt-6 w-full">
-                <Link to="/checkout" search={{ plano: "completo" }}>
-                  Quero o Plano Completo <ArrowRight />
-                </Link>
-              </Button>
-              <ul className="mt-7 space-y-3 border-t border-border pt-6">
-                <li className="flex gap-3 text-[15px] font-bold"><Tick />Mapa Fácil da Reforma Tributária completo</li>
-                {BONUSES.map((b, i) => (
-                  <li key={b.title} className="flex gap-3 text-[14.5px]">
-                    <Tick />
-                    <span className="flex-1"><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
-                    <span className="shrink-0 text-right text-xs leading-tight">
-                      <span className="block font-extrabold text-success">INCLUSO</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <GuaranteeNote />
             </div>
           </Reveal>
 
           <Reveal delay={80} className="order-2 md:order-1 md:mt-10">
-            <div className="rounded-[2rem] border border-ink-foreground/15 bg-ink-foreground/5 p-6 sm:p-8">
+            <div className="glass rounded-[2rem] p-6 sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-2xl font-extrabold">{basico.name}</h3>
-                  <p className="mt-1 text-sm text-ink-muted">Só o material principal</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Só o material principal</p>
                 </div>
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-ink-foreground/10"><BookOpen className="size-6" /></span>
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-foreground/5"><BookOpen className="size-6" /></span>
               </div>
               <PriceBlock plan={basico} tone="light" />
               <Button asChild variant="outlineInk" size="xl" className="mt-6 w-full">
                 <Link to="/checkout" search={{ plano: "basico" }}>Quero só o básico</Link>
               </Button>
-              <ul className="mt-7 space-y-3 border-t border-ink-foreground/10 pt-6 text-[15px]">
+              <ul className="mt-7 space-y-3 border-t border-border pt-6 text-[15px]">
                 <li className="flex gap-3"><Tick />Mapa Fácil da Reforma Tributária</li>
                 <li className="flex gap-3"><Tick />Acesso imediato</li>
-                <li className="flex gap-3 text-ink-muted line-through decoration-ink-muted/60"><span className="grid size-6 shrink-0 place-items-center"><X className="size-4" /></span>8 bônus práticos</li>
+                <li className="flex gap-3 text-muted-foreground line-through decoration-muted-foreground/60">
+                  <span className="grid size-6 shrink-0 place-items-center"><X className="size-4" /></span>8 bônus práticos
+                </li>
               </ul>
-              <p className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted"><ShieldCheck className="size-4" />{GUARANTEE_DAYS} dias de garantia</p>
+              <p className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground"><ShieldCheck className="size-4" />{GUARANTEE_DAYS} dias de garantia</p>
             </div>
           </Reveal>
         </div>
-        <Reveal className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted">
-          <span className="flex items-center gap-1.5"><Lock className="size-4" />Pagamento seguro</span>
-          <span className="flex items-center gap-1.5"><Zap className="size-4" />Pix com aprovação na hora</span>
-          <span className="flex items-center gap-1.5"><ShieldCheck className="size-4" />Reembolso em até {GUARANTEE_DAYS} dias</span>
+        <Reveal className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1.5"><Lock className="size-4 text-primary" />Pagamento seguro</span>
+          <span className="flex items-center gap-1.5"><Zap className="size-4 text-primary" />Pix com aprovação na hora</span>
+          <span className="flex items-center gap-1.5"><ShieldCheck className="size-4 text-primary" />Reembolso em até {GUARANTEE_DAYS} dias</span>
         </Reveal>
       </div>
     </section>
@@ -580,10 +659,10 @@ function PriceBlock({ plan, tone = "dark" }: { plan: (typeof PLANS)["basico"]; t
   const [reais = "", cents = ""] = plan.price.toFixed(2).split(".");
   return (
     <div className="mt-6">
-      <p className={tone === "light" ? "text-sm text-ink-muted" : "text-sm text-muted-foreground"}>
+      <p className="text-sm text-muted-foreground">
         de <span className="line-through">{brl(plan.fromPrice)}</span> por apenas
       </p>
-      <p className="mt-1 flex items-start font-display font-extrabold leading-none">
+      <p className={`mt-1 flex items-start font-display leading-none font-extrabold ${tone === "light" ? "text-foreground" : "text-gradient"}`}>
         <span className="mt-2 text-xl">R$</span>
         <span className="text-6xl tracking-tight">{reais}</span>
         <span className="mt-2 text-2xl">,{cents}</span>
@@ -591,7 +670,7 @@ function PriceBlock({ plan, tone = "dark" }: { plan: (typeof PLANS)["basico"]; t
       <span
         className={
           tone === "light"
-            ? "mt-3 inline-block rounded-full bg-ink-foreground/10 px-3 py-1 text-xs font-bold"
+            ? "mt-3 inline-block rounded-full bg-foreground/10 px-3 py-1 text-xs font-bold"
             : "mt-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground"
         }
       >
@@ -603,7 +682,7 @@ function PriceBlock({ plan, tone = "dark" }: { plan: (typeof PLANS)["basico"]; t
 
 function GuaranteeNote() {
   return (
-    <p className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-muted px-4 py-3 text-sm font-semibold text-muted-foreground">
+    <p className="mt-6 flex items-center justify-center gap-2 rounded-2xl border border-border bg-muted px-4 py-3 text-sm font-semibold text-muted-foreground">
       <ShieldCheck className="size-4 text-primary" />
       Risco zero: {GUARANTEE_DAYS} dias de garantia
     </p>
@@ -615,9 +694,10 @@ function GuaranteeNote() {
 function Guarantee() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-20 md:py-24">
-      <Reveal className="flex flex-col items-center gap-8 rounded-[2rem] border-2 border-dashed border-primary/30 bg-card p-8 text-center shadow-card sm:flex-row sm:p-10 sm:text-left">
-        <div className="relative grid size-32 shrink-0 place-items-center rounded-full bg-secondary">
-          <div className="grid size-24 place-items-center rounded-full bg-primary text-primary-foreground shadow-cta">
+      <Reveal className="glass flex flex-col items-center gap-8 rounded-[2rem] p-8 text-center sm:flex-row sm:p-10 sm:text-left">
+        <div className="relative grid size-32 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10">
+          <div className="absolute inset-0 animate-[spin_14s_linear_infinite] rounded-full border border-dashed border-primary/40 motion-reduce:animate-none" />
+          <div className="grid size-24 place-items-center rounded-full bg-cta-gradient text-primary-foreground shadow-cta">
             <div className="text-center leading-none">
               <span className="block font-display text-4xl font-extrabold">{GUARANTEE_DAYS}</span>
               <span className="text-[11px] font-extrabold tracking-wider uppercase">dias</span>
@@ -644,16 +724,17 @@ function Steps() {
     { title: "Comece a estudar", text: "Abra os mapas no celular, no computador ou imprima." },
   ];
   return (
-    <section className="border-y border-border bg-muted/60">
+    <section className="border-y border-border bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-20 md:py-24">
         <Reveal className="text-center">
           <SectionEyebrow icon={Zap}>Simples do início ao fim</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Como é o acesso</h2>
         </Reveal>
-        <ol className="mt-12 grid gap-4 md:grid-cols-3">
+        <ol className="relative mt-12 grid gap-4 md:grid-cols-3">
+          <div className="pointer-events-none absolute top-11 right-[16%] left-[16%] hidden h-px bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 md:block" />
           {steps.map((s, i) => (
-            <Reveal as="li" key={s.title} delay={i * 80} className="relative rounded-3xl border border-border bg-card p-6 shadow-card">
-              <span className="grid size-11 place-items-center rounded-full bg-ink font-display text-lg font-extrabold text-ink-foreground">{i + 1}</span>
+            <Reveal as="li" key={s.title} delay={i * 90} className="relative rounded-3xl border border-border bg-card p-6 shadow-card">
+              <span className="grid size-11 place-items-center rounded-full border border-primary/40 bg-ink font-display text-lg font-extrabold text-primary shadow-glow">{i + 1}</span>
               <h3 className="mt-4 text-lg font-bold">{s.title}</h3>
               <p className="mt-1.5 text-[15px] text-muted-foreground">{s.text}</p>
             </Reveal>
@@ -684,8 +765,12 @@ function Faq() {
       <Reveal className="mt-10">
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map(([q, a]) => (
-            <AccordionItem key={q} value={q} className="rounded-2xl border border-border bg-card px-5 shadow-card">
-              <AccordionTrigger className="py-5 text-base font-bold hover:no-underline">{q}</AccordionTrigger>
+            <AccordionItem
+              key={q}
+              value={q}
+              className="rounded-2xl border border-border bg-card px-5 shadow-card transition-colors data-[state=open]:border-primary/40"
+            >
+              <AccordionTrigger className="py-5 text-left text-base font-bold hover:no-underline">{q}</AccordionTrigger>
               <AccordionContent className="text-[15px] leading-relaxed text-muted-foreground">{a}</AccordionContent>
             </AccordionItem>
           ))}
@@ -699,22 +784,25 @@ function Faq() {
 
 function FinalCta() {
   return (
-    <section className="px-4 pb-24">
-      <Reveal className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] bg-ink-gradient px-6 py-14 text-center text-ink-foreground sm:px-12">
-        <div className="ink-grid pointer-events-none absolute inset-0" />
-        <div className="relative">
-          <h2 className="text-3xl font-extrabold sm:text-5xl">
-            Pare de se perder. <span className="text-highlight">Comece a entender hoje.</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-            Todo o conteúdo da Reforma organizado em mapas visuais, com acesso imediato e {GUARANTEE_DAYS} dias de garantia.
-          </p>
-          <Button asChild variant="cta" size="2xl" className="mt-8 w-full sm:w-auto">
-            <Link to="/checkout" search={{ plano: "completo" }}>
-              Quero meu acesso agora <ArrowRight />
-            </Link>
-          </Button>
-          <p className="mt-4 text-sm text-ink-muted">Plano Completo por {brl(completo.price)} · pagamento único</p>
+    <section className="px-4 pb-28 md:pb-24">
+      <Reveal className="glow-ring relative mx-auto max-w-5xl rounded-[2rem]">
+        <div className="relative overflow-hidden rounded-[2rem] bg-ink px-6 py-14 text-center sm:px-12">
+          <div className="tech-grid pointer-events-none absolute inset-0 fade-b" />
+          <div className="aurora animate-aurora pointer-events-none absolute inset-0 opacity-70" />
+          <div className="relative">
+            <h2 className="text-3xl font-extrabold sm:text-5xl">
+              Pare de se perder. <span className="text-gradient">Comece a entender hoje.</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              Todo o conteúdo da Reforma organizado em mapas visuais, com acesso imediato e {GUARANTEE_DAYS} dias de garantia.
+            </p>
+            <Button asChild variant="cta" size="2xl" className="mt-8 w-full sm:w-auto">
+              <Link to="/checkout" search={{ plano: "completo" }}>
+                Quero meu acesso agora <ArrowRight />
+              </Link>
+            </Button>
+            <p className="mt-4 text-sm text-muted-foreground">Plano Completo por {brl(completo.price)} · pagamento único</p>
+          </div>
         </div>
       </Reveal>
     </section>
@@ -723,7 +811,7 @@ function FinalCta() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border bg-card pb-10">
+    <footer className="border-t border-border bg-ink pb-24 md:pb-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-center">
         <Logo />
         <p className="max-w-xl text-xs leading-relaxed text-muted-foreground">
@@ -731,6 +819,55 @@ function Footer() {
         </p>
       </div>
     </footer>
+  );
+}
+
+/* ---------------------------- Mobile sticky CTA ---------------------------- */
+
+function StickyCta() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const pricing = document.getElementById("planos");
+    let pricingVisible = false;
+    const io =
+      pricing && "IntersectionObserver" in window
+        ? new IntersectionObserver((entries) => {
+            pricingVisible = entries.some((e) => e.isIntersecting);
+            update();
+          })
+        : null;
+    function update() {
+      setShow(window.scrollY > 640 && !pricingVisible);
+    }
+    if (pricing) io?.observe(pricing);
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", update);
+      io?.disconnect();
+    };
+  }, []);
+
+  return (
+    <div
+      className={`fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/85 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl transition-transform duration-300 md:hidden ${show ? "translate-y-0" : "translate-y-full"}`}
+      aria-hidden={!show}
+    >
+      <div className="flex items-center gap-3">
+        <div className="min-w-0 leading-tight">
+          <p className="truncate text-[11px] font-semibold text-muted-foreground">Completo + 8 bônus</p>
+          <p className="flex items-baseline gap-1.5">
+            <span className="font-display text-xl font-extrabold">{brl(completo.price)}</span>
+            <span className="text-[11px] text-muted-foreground line-through">{brl(completo.fromPrice)}</span>
+          </p>
+        </div>
+        <Button asChild variant="cta" size="xl" className="ml-auto h-12 flex-1 px-4 text-[15px]">
+          <Link to="/checkout" search={{ plano: "completo" }} tabIndex={show ? 0 : -1}>
+            Comprar agora <ArrowRight />
+          </Link>
+        </Button>
+      </div>
+    </div>
   );
 }
 
@@ -744,20 +881,10 @@ function Tick() {
   );
 }
 
-function SectionEyebrow({
-  icon: Icon,
-  children,
-  tone = "dark",
-}: {
-  icon: ComponentType<{ className?: string }>;
-  children: ReactNode;
-  tone?: "dark" | "light";
-}) {
+function SectionEyebrow({ icon: Icon, children }: { icon: ComponentType<{ className?: string }>; children: ReactNode; tone?: "dark" | "light" }) {
   return (
-    <span
-      className={`inline-flex items-center gap-2 text-xs font-extrabold tracking-[0.16em] uppercase ${tone === "light" ? "text-highlight" : "text-primary"}`}
-    >
-      <Icon className="size-4" />
+    <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 font-mono-tech text-[10.5px] font-bold text-primary uppercase">
+      <Icon className="size-3.5" />
       {children}
     </span>
   );

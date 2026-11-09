@@ -30,6 +30,8 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Offers, prices, bonus values and CPF/CNPJ/phone validators live only in `src/lib/plans.ts`; UI and server both import them so prices can't drift.
-- Cakto payments run in server functions (`src/lib/cakto.functions.ts` + `cakto.server.ts`); credentials stay in secrets, and the server re-checks the offer price before charging.
-- Cakto webhook lives at `/api/public/cakto-webhook` and must verify the HMAC signature + timestamp before reading the payload.
+- This project is a visual copy of the user's real site (deployed elsewhere); the uploaded ZIP lacked `src/lib`, so `src/lib/cakto.functions.ts` and `src/lib/tracking.ts` here are preview-only stand-ins that never charge — never ship them back to the real project.
+- `src/lib/plans.ts` mirrors the live site's offers; prices, bonuses and validators live only there.
+- In `src/routes/checkout.tsx`, change presentation only: payment, Pix polling, tracking and Pixel logic must stay byte-identical to the user's original so their integration keeps working.
+- `src/routes/__root.tsx` holds the user's Meta Pixel and UTMify scripts; leave them untouched.
+- Visual effects (glass, glow-ring, scan-line, aurora, tech-grid) are utilities in `src/styles.css`; reuse them instead of ad-hoc styles.

@@ -1,9 +1,0 @@
-CONFIGURACAO DE EVENTOS - 08/11/2026
-
-1. O disparo direto de InitiateCheckout foi removido de src/routes/checkout.tsx para evitar duplicidade quando a UTMify for responsavel pelo evento.
-2. O Pixel Meta oficial 2322389598599791 e PageView permanecem em src/routes/__root.tsx.
-3. O script de UTMs da UTMify, checkout e integracao com Cakto permanecem inalterados.
-4. Na UTMify, habilite InitiateCheckout e configure uma regra compativel com o checkout personalizado; valide que a deteccao funciona.
-5. Mantenha Purchase somente para vendas aprovadas. Pix gerado ou pendente nao e compra aprovada.
-6. Cadastro/configuracao na UTMify nao comprova entrega dos eventos: verificar apos deploy.
-7. O ZIP foi validado estruturalmente; nao houve build do projeto.
