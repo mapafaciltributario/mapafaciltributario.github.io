@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ComponentType, type ReactNode } from "react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import {
@@ -26,6 +26,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { checkoutHref, checkoutClick } from "@/lib/checkout-links";
 import { Logo } from "@/components/brand/Logo";
 import { Reveal } from "@/components/landing/Reveal";
 import { Button } from "@/components/ui/button";
@@ -486,9 +487,9 @@ function Bonuses() {
           Você leva o material principal + todos os bônus por apenas {brl(completo.price)}.
         </p>
         <Button asChild variant="cta" size="xl" className="mt-6 w-full sm:w-auto">
-          <Link to="/checkout" search={{ plano: "completo" }}>
+          <a href={checkoutHref("completo")} onClick={(event) => checkoutClick(event, "completo")}>
             Quero os 8 bônus grátis <ArrowRight />
-          </Link>
+          </a>
         </Button>
       </Reveal>
     </section>
@@ -524,9 +525,9 @@ function Pricing() {
               </div>
               <PriceBlock plan={completo} />
               <Button asChild variant="cta" size="2xl" className="mt-6 w-full">
-                <Link to="/checkout" search={{ plano: "completo" }}>
+                <a href={checkoutHref("completo")} onClick={(event) => checkoutClick(event, "completo")}>
                   Quero o Plano Completo <ArrowRight />
-                </Link>
+                </a>
               </Button>
               <ul className="mt-7 space-y-3 border-t border-border pt-6">
                 <li className="flex gap-3 text-[15px] font-bold"><Tick />Mapa Fácil da Reforma Tributária completo</li>
@@ -555,7 +556,7 @@ function Pricing() {
               </div>
               <PriceBlock plan={basico} tone="light" />
               <Button asChild variant="outlineInk" size="xl" className="mt-6 w-full">
-                <Link to="/checkout" search={{ plano: "basico" }}>Quero só o básico</Link>
+                <a href={checkoutHref("basico")} onClick={(event) => checkoutClick(event, "basico")}>Quero só o básico</a>
               </Button>
               <ul className="mt-7 space-y-3 border-t border-ink-foreground/10 pt-6 text-[15px]">
                 <li className="flex gap-3"><Tick />Mapa Fácil da Reforma Tributária</li>
@@ -710,9 +711,9 @@ function FinalCta() {
             Todo o conteúdo da Reforma organizado em mapas visuais, com acesso imediato e {GUARANTEE_DAYS} dias de garantia.
           </p>
           <Button asChild variant="cta" size="2xl" className="mt-8 w-full sm:w-auto">
-            <Link to="/checkout" search={{ plano: "completo" }}>
+            <a href={checkoutHref("completo")} onClick={(event) => checkoutClick(event, "completo")}>
               Quero meu acesso agora <ArrowRight />
-            </Link>
+            </a>
           </Button>
           <p className="mt-4 text-sm text-ink-muted">Plano Completo por {brl(completo.price)} · pagamento único</p>
         </div>
