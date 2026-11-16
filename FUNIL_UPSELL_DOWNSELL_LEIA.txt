@@ -1,0 +1,16 @@
+FUNIL CAKTO — UPSELL + DOWNSELL
+
+Página principal: / (mantida)
+Upsell: https://mapafaciltributario.vercel.app/upsell
+Downsell: https://mapafaciltributario.vercel.app/downsell
+
+UPSELL: oferta cmuqduv, R$ 21,90. Aceita -> members_area. Recusa -> /downsell.
+DOWNSELL: oferta 342v6ec, R$ 14,90. Aceita -> members_area. Recusa -> members_area.
+
+1. Publique este ZIP no projeto Vercel correto.
+2. Verifique as duas URLs depois do deploy.
+3. No produto PRINCIPAL na Cakto, configure a URL /upsell como página após compra aprovada.
+4. Confirme os IDs das ofertas na Cakto e se as duas ofertas estão ativas.
+5. Teste o fluxo completo a partir de compra aprovada, incluindo recusa e aceite, antes de usar com tráfego.
+
+IMPORTANTE: O script da Cakto precisa do contexto real de compra para executar corretamente; abrir as páginas isoladas não prova cobrança 1-clique. Nenhum checkout ou variável de ambiente nova foi adicionado.

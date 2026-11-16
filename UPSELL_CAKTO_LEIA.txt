@@ -1,0 +1,17 @@
+UPSELL CAKTO — INSTRUÇÕES
+
+Página criada: /upsell
+URL após publicar: https://mapafaciltributario.vercel.app/upsell
+
+1. Publique este projeto no mesmo deploy do site atual.
+2. Na Cakto, abra o produto principal > Upsell/Downsell.
+3. Ative 'Este produto tem uma página de obrigado personalizada ou upsell'.
+4. Cole a URL https://mapafaciltributario.vercel.app/upsell no campo de redirecionamento da página de upsell e salve.
+5. CONFIRME antes que offer-id cmuqduv é a oferta do Pack Planejamento Tributário Pro (não necessariamente o ID do produto).
+6. Os dois destinos 'members_area' foram preservados exatamente do código da Cakto; confirme na Cakto se esse é o destino desejado para aceitar e recusar.
+7. Confira a página em celular e computador e valide o fluxo no ambiente de simulação/uma compra autorizada antes de enviar tráfego.
+
+A página / de vendas não foi alterada; não foi criado checkout próprio.
+O script e os botões oficiais da Cakto só foram adicionados na rota /upsell.
+O código de tracking e as UTMs existentes não foram alterados.
+ATENÇÃO: O funcionamento real da cobrança de 1 clique depende da oferta e do fluxo de compra na Cakto; não pode ser validado apenas pelo código estático.
