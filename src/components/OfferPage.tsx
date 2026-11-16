@@ -4,7 +4,7 @@ import { CaktoButtons } from "./CaktoButtons";
 
 type Props = {
   alert: string; badge: string; titleA: string; titleHi: string; titleB: string; subtitle: string;
-  pains: string[]; items: string[]; oldPrice: string; price: string; priceNote: string; discount: string;
+  pains: string[]; items: string[]; oldPrice?: string; price: string; priceNote: string; discount: string;
   minutes: number; offerId: string; offerType: "upsell" | "downsell"; rejectUrl: string;
   acceptLabel: string; rejectLabel: string; step: number; footnote: string;
 };
@@ -63,7 +63,11 @@ export function OfferPage(p: Props) {
           </ul>
 
           <div className="price-box mt-7 rounded-xl p-5 text-center">
-            <p className="text-sm text-muted-foreground">De <span className="strike font-bold">{p.oldPrice}</span> por apenas</p>
+            {p.oldPrice ? (
+              <p className="text-sm text-muted-foreground">De <span className="strike font-bold">{p.oldPrice}</span> por apenas</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">Por apenas</p>
+            )}
             <p className="price-pop whitespace-nowrap font-display text-5xl sm:text-6xl font-extrabold text-gradient">{p.price}</p>
             <p className="mt-1 text-sm font-bold text-primary">{p.priceNote}</p>
           </div>
