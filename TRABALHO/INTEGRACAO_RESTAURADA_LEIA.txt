@@ -1,0 +1,30 @@
+MAPA FÁCIL — DESIGN LOVABLE PRESERVADO + BACKEND RESTAURADO
+
+Base: PASTA-SITENOVO.zip. Nenhum arquivo de layout, estilo, imagem, animação,
+landing page ou checkout visual foi substituído.
+
+Arquivos restaurados de uma versão anterior com backend Cakto:
+- src/lib/cakto.functions.ts (substitui o stub que desativava pagamentos)
+- src/lib/cakto.server.ts (acesso servidor à API da Cakto)
+- src/lib/tracking.ts (restaura leitura das UTMs armazenadas pelo script)
+- src/routes/api/public/cakto-webhook.ts (endpoint anterior)
+
+ATENÇÃO: O TRABALHO.zip recebido também não continha os arquivos principais
+do backend. Estes arquivos foram recuperados do pacote anterior
+TRABALHO_INITIATECHECKOUT_CORRIGIDO.zip, já disponível na conversa.
+
+CONFIGURAR NO AMBIENTE DE PRODUÇÃO (Vercel, somente servidor):
+CAKTO_CLIENT_ID
+CAKTO_CLIENT_SECRET
+CAKTO_OFFER_ID_BASICO
+CAKTO_OFFER_ID_COMPLETO
+CAKTO_ENABLE_CARD=true (apenas após confirmar SDK/tokenização e permissões)
+CAKTO_WEBHOOK_SECRET (se usar o webhook e após validar assinatura no provedor)
+
+IMPORTANTE: conferir IDs de ofertas e valores configurados, testar Pix em
+ambiente controlado, conferir status real do pedido e eventos Meta/UTMify.
+O webhook restaurado apenas registra o recebimento; NÃO entrega produtos.
+A assinatura de webhook precisa ser conferida com documentação oficial.
+Não considerar o checkout pronto para produção sem testes reais.
+
+Nenhuma credencial secreta foi incluída neste ZIP.

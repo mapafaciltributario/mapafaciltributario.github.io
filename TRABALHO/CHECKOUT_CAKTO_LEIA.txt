@@ -1,0 +1,15 @@
+CHECKOUT OFICIAL CAKTO — ALTERAÇÕES
+
+Plano Básico: https://pay.cakto.com.br/3eidzea_1292287
+Plano Completo: https://pay.cakto.com.br/3foqmgo
+
+- Os quatro botões de compra da landing page apontam diretamente aos checkouts oficiais.
+- Parâmetros utm_* e identificadores fbclid/gclid/ttclid/src/sck são repassados ao clicar.
+- A rota antiga /checkout redireciona para a Cakto, preservando os parâmetros de URL.
+- Funções de criação de pagamentos, acesso à API da Cakto e webhook do gateway próprio foram removidos.
+- Scripts atuais de Meta Pixel e UTMify da landing page foram preservados sem alterações.
+
+IMPORTANTE: a correção dos eventos UTMify/Meta ainda NÃO foi feita. Confira a integração
+Cakto > UTMify e valide em produção a chegada das UTMs, os eventos de checkout e compra.
+Teste os dois links e a atribuição antes de religar anúncios. Não é necessário usar
+CAKTO_CLIENT_ID/SECRET neste site para pagamentos via checkout hospedado.
