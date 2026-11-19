@@ -5,6 +5,12 @@ export const CHECKOUT_URLS = {
 } as const;
 export type Plano = keyof typeof CHECKOUT_URLS;
 
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
 /** Preserve UTMs/click IDs from the ad landing page on the external checkout. */
 export function checkoutHref(plano: Plano, search?: string): string {
   const url = new URL(CHECKOUT_URLS[plano]);
@@ -17,9 +23,23 @@ export function checkoutHref(plano: Plano, search?: string): string {
   return url.toString();
 }
 
-/** Keep the HTML href valid even without JS; attach current UTMs on click. */
+/** Keep the HTML href valid even without JS; track InitiateCheckout and attach current UTMs on click. */
 export function checkoutClick(event: { preventDefault(): void }, plano: Plano) {
   if (typeof window === "undefined") return;
   event.preventDefault();
-  window.location.assign(checkoutHref(plano));
+  try {
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "InitiateCheckout", {
+        content_name: plano === "completo" ? "Plano Completo - Mapa Fácil" : "Plano Básico - Mapa Fácil",
+        value: plano === "completo" ? 37.9 : 27.9,
+        currency: "BRL",
+      });
+    }
+  } catch {
+    // Ignore pixel errors so navigation never blocks.
+  }
+  const target = checkoutHref(plano);
+  window.setTimeout(() => {
+    window.location.assign(target);
+  }, 120);
 }

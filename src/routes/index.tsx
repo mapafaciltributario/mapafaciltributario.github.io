@@ -52,16 +52,16 @@ import devicesAsset from "@/assets/mapa-facil-dispositivos.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mapa Fácil da Reforma Tributária — IBS, CBS e Imposto Seletivo em mapas visuais" },
+      { title: "Mapa Fácil da Reforma Tributária — Códigos IBS/CBS, CST, cClassTrib e NF-e 2027" },
       {
         name: "description",
         content:
-          "Entenda a Reforma Tributária sem leis extensas: mapas mentais, checklist, linha do tempo e planilhas de IBS/CBS. Acesso imediato e 7 dias de garantia.",
+          "Evite erros de parametrização e rejeição na NF-e em 2027: tabela pronta de códigos IBS/CBS (CST, cClassTrib, cIndOp), gabarito de Nota Fiscal e mapas visuais. Acesso imediato.",
       },
-      { property: "og:title", content: "Mapa Fácil da Reforma Tributária" },
+      { property: "og:title", content: "Mapa Fácil da Reforma Tributária — Códigos IBS/CBS e NF-e 2027" },
       {
         property: "og:description",
-        content: "IBS, CBS e Imposto Seletivo explicados em mapas visuais. A partir de R$ 27,90.",
+        content: "Tabela de CST/cClassTrib, gabarito de NF-e e mapas visuais da Reforma Tributária. A partir de R$ 27,90.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -119,7 +119,7 @@ function Header() {
         <Logo />
         <nav className="hidden items-center gap-7 text-sm font-semibold text-muted-foreground md:flex">
           <a href="#conteudo" className="hover:text-foreground">Conteúdo</a>
-          <a href="#bonus" className="hover:text-foreground">Bônus</a>
+          <a href="#bonus" className="hover:text-foreground">Ferramentas &amp; Bônus</a>
           <a href="#planos" className="hover:text-foreground">Planos</a>
           <a href="#duvidas" className="hover:text-foreground">Dúvidas</a>
         </nav>
@@ -140,30 +140,36 @@ function Hero() {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-secondary px-3.5 py-1.5 text-xs font-bold text-secondary-foreground">
               <span className="size-1.5 rounded-full bg-primary" />
-              IBS · CBS · Imposto Seletivo · Transição
+              IBS · CBS · CST · cClassTrib · NF-e 2027
             </span>
           </Reveal>
           <Reveal delay={60}>
-            <h1 className="mt-5 text-[2.6rem] leading-[1.02] font-extrabold text-foreground sm:text-6xl lg:text-[4.2rem]">
-              A Reforma Tributária, <span className="marker">finalmente fácil</span> de entender.
+            <h1 className="mt-5 text-[2.45rem] leading-[1.05] font-extrabold text-foreground sm:text-5xl lg:text-[3.75rem]">
+              Evite erros de parametrização e <span className="marker">rejeição na NF-e</span> com os novos códigos IBS/CBS.
             </h1>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Mapas mentais, checklist e linha do tempo que organizam as principais mudanças em um material{" "}
-              <strong className="text-foreground">simples, visual e direto ao ponto</strong> — sem leis extensas nem lives longas.
+              Tenha em mãos a <strong className="text-foreground">Tabela Pronta de Códigos (CST, cClassTrib, cIndOp e cCredPres)</strong>, o{" "}
+              <strong className="text-foreground">Gabarito de preenchimento na Nota Fiscal</strong> e os Mapas Visuais da Reforma Tributária para consultar em segundos no dia a dia.
             </p>
           </Reveal>
-          <Reveal delay={180} className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button asChild variant="cta" size="2xl" className="w-full sm:w-auto">
-              <a href="#planos">
-                Quero entender a Reforma
-                <ArrowRight />
-              </a>
-            </Button>
+          <Reveal delay={180} className="mt-7 flex flex-col gap-2.5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button asChild variant="cta" size="2xl" className="w-full sm:w-auto">
+                <a href="#planos">
+                  Quero acessar o Guia e a Tabela agora
+                  <ArrowRight />
+                </a>
+              </Button>
+            </div>
+            <p className="text-[13px] font-semibold text-foreground/85">
+              Acesso imediato por apenas <span className="font-extrabold text-primary">{brl(basico.price)}</span> (ou{" "}
+              <span className="font-extrabold text-primary">{brl(completo.price)}</span> no Plano Completo com todos os códigos e planilhas)
+            </p>
           </Reveal>
           <Reveal delay={240}>
-            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-muted-foreground">
               <li className="flex items-center gap-1.5"><ShieldCheck className="size-4 text-primary" />{GUARANTEE_DAYS} dias de garantia</li>
               <li className="flex items-center gap-1.5"><Zap className="size-4 text-primary" />Acesso imediato</li>
               <li className="flex items-center gap-1.5"><Lock className="size-4 text-primary" />Compra segura via Pix</li>
@@ -176,7 +182,7 @@ function Hero() {
           <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-lift">
             <img
               src={heroAsset}
-              alt="Coleção Mapa Fácil: livro, mapas mentais de IBS e CBS, checklist e linha do tempo sobre uma mesa"
+              alt="Coleção Mapa Fácil: mapas visuais de IBS e CBS, tabela de códigos fiscais, gabarito de NF-e e checklist"
               width={1600}
               height={1200}
               className="aspect-[4/3] w-full object-cover"
@@ -185,10 +191,10 @@ function Hero() {
           </div>
           <div className="animate-float absolute -bottom-5 left-3 flex items-center gap-2.5 rounded-2xl border border-border bg-card px-3.5 py-2.5 shadow-lift sm:left-6">
             <span className="grid size-9 place-items-center rounded-xl bg-secondary text-primary"><Files className="size-5" /></span>
-            <span className="text-xs leading-tight"><strong className="block text-sm text-foreground">PDF + planilhas</strong><span className="text-muted-foreground">celular, PC ou impresso</span></span>
+            <span className="text-xs leading-tight"><strong className="block text-sm text-foreground">Tabela de Códigos + PDF</strong><span className="text-muted-foreground">celular, PC ou impresso</span></span>
           </div>
           <div className="absolute -top-4 right-3 rotate-3 rounded-xl bg-accent px-3 py-1.5 font-display text-sm font-extrabold text-accent-foreground shadow-card sm:right-6">
-            Do complexo ao simples ✓
+            CST · cClassTrib · NF-e ✓
           </div>
         </Reveal>
       </div>
@@ -198,8 +204,8 @@ function Hero() {
 
 function SpecsStrip() {
   const items = [
-    { icon: Brain, label: "Mapas mentais prontos" },
-    { icon: MonitorSmartphone, label: "Celular e computador" },
+    { icon: Table2, label: "Tabela de códigos IBS/CBS" },
+    { icon: FileCheck, label: "Gabarito de NF-e 2027" },
     { icon: Zap, label: "Acesso na hora" },
     { icon: ShieldCheck, label: `${GUARANTEE_DAYS} dias de garantia` },
   ];
@@ -221,21 +227,21 @@ function SpecsStrip() {
 
 function Problem() {
   const pains = [
-    "Leis extensas e textos técnicos logo de cara",
-    "Lives longas que não chegam ao ponto",
-    "Conteúdos soltos que não se conectam",
+    "Dúvida na hora de parametrizar CST, cClassTrib e cIndOp no ERP",
+    "Risco de rejeição de NF-e e travamento de faturamento na virada de 2027",
+    "Perder horas cruzando notas técnicas e leis extensas soltas",
   ];
   const gains = [
-    "Os principais pontos organizados visualmente",
-    "IBS, CBS e Imposto Seletivo explicados com clareza",
-    "Um caminho simples para saber por onde começar",
+    "Tabela pronta dos novos códigos IBS/CBS para consulta rápida",
+    "Gabarito visual passo a passo dos campos da Nota Fiscal",
+    "Mapas mentais objetivos para alinhar equipe e orientar clientes",
   ];
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 md:py-28">
       <Reveal className="mx-auto max-w-2xl text-center">
-        <SectionEyebrow icon={Sparkles}>Menos confusão. Mais clareza.</SectionEyebrow>
+        <SectionEyebrow icon={Sparkles}>Menos risco fiscal. Mais agilidade.</SectionEyebrow>
         <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-          Quanto tempo você ainda vai gastar tentando entender a Reforma em <span className="marker">conteúdos soltos?</span>
+          Sua rotina fiscal está pronta para parametrizar <span className="marker">IBS e CBS</span> sem travar notas?
         </h2>
       </Reveal>
       <div className="mt-12 grid gap-4 md:grid-cols-2">
@@ -270,19 +276,19 @@ function Problem() {
 
 function Features() {
   const features = [
-    { icon: Brain, title: "Mapas mentais prontos", text: "Os principais temas já organizados em mapas visuais. Nada de montar resumo do zero." },
-    { icon: Calculator, title: "Novos tributos explicados", text: "IBS, CBS e Imposto Seletivo com clareza, para entender o papel de cada um." },
-    { icon: Layers, title: "Organizado por temas", text: "Visão geral, transição, documentos fiscais, obrigações e regimes em ordem lógica." },
-    { icon: FolderOpen, title: "Arquivos em pastas", text: "Tudo separado para estudar, revisar e consultar sempre que precisar." },
+    { icon: Table2, title: "Códigos mapeados", text: "CST, cClassTrib, cIndOp e cCredPres organizados para consulta rápida no ERP." },
+    { icon: FileCheck, title: "Gabarito de NF-e", text: "Passo a passo visual dos novos campos de destaque de IBS e CBS na nota." },
+    { icon: Brain, title: "Mapas visuais prontos", text: "IBS, CBS, Imposto Seletivo e regras de transição resumidos sem juridiquês." },
+    { icon: FolderOpen, title: "Consulta imediata", text: "Arquivos organizados em pastas para usar no computador, celular ou imprimir." },
   ];
   return (
     <section className="relative overflow-hidden bg-ink-gradient text-ink-foreground">
       <div className="ink-grid pointer-events-none absolute inset-0" />
       <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
         <Reveal className="max-w-2xl">
-          <SectionEyebrow icon={Layers} tone="light">Clareza em cada tema</SectionEyebrow>
+          <SectionEyebrow icon={Layers} tone="light">Parametrização sem erro</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-            Tudo fica mais fácil quando está <span className="text-highlight">organizado visualmente</span>
+            Tudo fica mais seguro quando está <span className="text-highlight">mapeado na prática</span>
           </h2>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -296,7 +302,7 @@ function Features() {
         </div>
         <Reveal className="mt-10">
           <Button asChild variant="cta" size="xl" className="w-full sm:w-auto">
-            <a href="#planos">Quero o Mapa Fácil <ArrowRight /></a>
+            <a href="#planos">Quero o Guia e a Tabela <ArrowRight /></a>
           </Button>
         </Reveal>
       </div>
@@ -307,18 +313,18 @@ function Features() {
 /* -------------------------------- Contents ------------------------------- */
 
 const CONTENTS = [
-  "Visão geral da Reforma Tributária",
-  "IBS explicado visualmente",
-  "CBS explicado visualmente",
-  "Imposto Seletivo",
-  "Apuração assistida explicada",
-  "Quando fazer Nota de Débito e Crédito",
-  "Transição da Reforma",
+  "Tabela de CST, cClassTrib, cIndOp e cCredPres (Plano Completo)",
+  "Gabarito de preenchimento na Nota Fiscal (Plano Completo)",
+  "Guia de emissão de NF-e, NFC-e, CT-e e NFS-e (Plano Completo)",
+  "Planilha Calculadora de IBS/CBS (Plano Completo)",
+  "IBS e CBS explicados visualmente",
+  "Apuração assistida e novos créditos",
+  "Quando emitir Nota de Débito e Crédito",
+  "Cronograma da transição 2026–2033",
   "Impactos na rotina contábil e fiscal",
-  "Documentos fiscais e obrigações",
   "Simples Nacional, MEI e regimes específicos",
-  "Termos técnicos traduzidos",
-  "Atualizações conforme mudanças relevantes",
+  "Glossário de termos técnicos traduzidos",
+  "Atualizações conforme novas notas técnicas",
 ];
 
 function Contents() {
@@ -328,7 +334,7 @@ function Contents() {
         <Reveal className="order-2 lg:order-1">
           <SectionEyebrow icon={BookOpen}>O que você vai receber</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-            Estude no celular, no computador <span className="marker">ou imprima</span>
+            Consulte na tela do ERP, no celular <span className="marker">ou imprima</span>
           </h2>
           <ul className="mt-8 grid gap-x-6 gap-y-3.5 sm:grid-cols-2">
             {CONTENTS.map((c) => (
@@ -360,20 +366,22 @@ function Contents() {
 
 function Audience() {
   const items: [string, string][] = [
-    ["Entender a Reforma sem começar por leis extensas", "Compreenda os pontos principais sem travar em textos técnicos."],
-    ["Organizar o que está sendo falado no mercado", "IBS, CBS, Imposto Seletivo e transição em uma sequência clara."],
-    ["Estudar sem depender de lives longas", "Revise os temas de forma rápida com mapas visuais."],
-    ["Saber por onde começar", "Siga um caminho simples, sem pular de conteúdo em conteúdo."],
-    ["Falar sobre o tema com mais segurança", "Acompanhe reuniões e conversas com clientes com mais clareza."],
-    ["Traduzir termos técnicos", "Consulte conceitos importantes em linguagem simples."],
+    ["Parametrizar CST e cClassTrib sem erro", "Consulte rapidamente os códigos exigidos para evitar rejeição na emissão."],
+    ["Conferir o destaque de IBS/CBS na Nota Fiscal", "Use o gabarito visual e a calculadora para validar valores antes de transmitir."],
+    ["Evitar travamento de NF-e, NFC-e, CT-e e NFS-e", "Tenha um guia objetivo das regras de emissão para cada documento fiscal."],
+    ["Orientar clientes e equipes com segurança", "Mostre o impacto da transição de forma clara em reuniões e diagnósticos."],
+    ["Dominar a Reforma sem ler centenas de páginas", "Estude pelos mapas mentais visuais em poucos minutos por dia."],
+    ["Ter um material de bancada sempre atualizado", "Acompanhe as mudanças regulamentares sem ficar perdido em notícias soltas."],
   ];
   return (
     <section className="border-y border-border bg-muted/60">
       <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
         <Reveal className="max-w-2xl">
-          <SectionEyebrow icon={Star}>Feito para o seu dia a dia</SectionEyebrow>
-          <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">Ideal para quem quer…</h2>
-          <p className="mt-3 text-muted-foreground">Contadores, profissionais fiscais, empresários e estudantes.</p>
+          <SectionEyebrow icon={Star}>Feito para a operação fiscal</SectionEyebrow>
+          <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">Ideal para quem precisa…</h2>
+          <p className="mt-3 text-muted-foreground">
+            Contadores, Analistas Fiscais, Faturistas, Consultores de ERP e Empresários que precisam parametrizar sistemas e evitar rejeição de notas.
+          </p>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map(([title, text], i) => (
@@ -416,13 +424,13 @@ function Bonuses() {
   return (
     <section id="bonus" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 md:py-28">
       <Reveal className="mx-auto max-w-2xl text-center">
-        <SectionEyebrow icon={Gift}>E não para por aí</SectionEyebrow>
+        <SectionEyebrow icon={Gift}>Pacote operacional completo</SectionEyebrow>
         <h2 className="mt-4 text-3xl font-extrabold sm:text-5xl">
-          <span className="marker">8 bônus</span> no Plano Completo
+          <span className="marker">8 ferramentas práticas</span> inclusas no Plano Completo
         </h2>
         <p className="mt-3 text-muted-foreground">
-          Ferramentas práticas para aplicar a Reforma na rotina. Separados, custariam{" "}
-          <strong className="text-foreground">{brl(bonusTotal())}</strong> — com o Plano Completo, saem de graça.
+          Inclui a Tabela de CST/cClassTrib, Gabarito de Nota Fiscal, Calculadora IBS/CBS e Guia de Emissão. Separados, custariam{" "}
+          <strong className="text-foreground">{brl(bonusTotal())}</strong> — no Plano Completo, saem de graça.
         </p>
       </Reveal>
       <Reveal className="fade-x -mx-4 mt-12 sm:mx-0">
@@ -448,7 +456,7 @@ function Bonuses() {
                   className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute top-3 left-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-extrabold tracking-wider text-accent-foreground shadow-card">
-                  BÔNUS {String(i + 1).padStart(2, "0")}
+                  FERRAMENTA {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <div className="flex flex-1 flex-col p-5">
@@ -462,7 +470,7 @@ function Bonuses() {
                     De <span className="font-bold line-through decoration-destructive/70">{brl(value)}</span>
                   </span>
                   <span className="rounded-full bg-success px-3 py-1 text-xs font-extrabold tracking-wider text-primary-foreground">
-                    GRÁTIS
+                    INCLUSO
                   </span>
                 </div>
               </div>
@@ -473,10 +481,10 @@ function Bonuses() {
           </CarouselContent>
         </Carousel>
       </Reveal>
-      <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver com calma</p>
+      <p className="mt-3 text-center text-xs text-muted-foreground">Arraste para o lado para ver todas as ferramentas</p>
 
       <Reveal className="mx-auto mt-10 max-w-3xl rounded-[2rem] border-2 border-dashed border-primary/30 bg-card p-6 text-center shadow-card sm:p-8">
-        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Valor total dos 8 bônus</p>
+        <p className="text-sm font-bold tracking-wider text-muted-foreground uppercase">Valor total das 8 ferramentas práticas</p>
         <p className="mt-1 font-display text-3xl font-extrabold text-muted-foreground line-through decoration-destructive/70 sm:text-4xl">
           {brl(bonusTotal())}
         </p>
@@ -484,11 +492,11 @@ function Bonuses() {
           Hoje: <span className="marker-green">R$ 0,00</span> ao adquirir o Plano Completo
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Você leva o material principal + todos os bônus por apenas {brl(completo.price)}.
+          Você leva o Mapa Fácil + Tabela de Códigos + Gabarito de NF-e + Calculadora por apenas {brl(completo.price)}.
         </p>
         <Button asChild variant="cta" size="xl" className="mt-6 w-full sm:w-auto">
           <a href={checkoutHref("completo")} onClick={(event) => checkoutClick(event, "completo")}>
-            Quero os 8 bônus grátis <ArrowRight />
+            Quero o Plano Completo com as 8 ferramentas <ArrowRight />
           </a>
         </Button>
       </Reveal>
@@ -514,12 +522,12 @@ function Pricing() {
           <Reveal className="order-1 md:order-2">
             <div className="relative rounded-[2rem] bg-card p-6 text-card-foreground shadow-lift ring-4 ring-highlight sm:p-8">
               <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-highlight px-4 py-1.5 text-xs font-extrabold tracking-wider whitespace-nowrap text-ink shadow-card">
-                ★ PLANO COMPLETO · 8 BÔNUS
+                ★ MAIS ESCOLHIDO · TABELA DE CÓDIGOS + NF-e
               </span>
               <div className="flex items-start justify-between gap-4 pt-2">
                 <div>
                   <h3 className="text-2xl font-extrabold">{completo.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">Material principal + 8 bônus</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Mapas visuais + Tabela de códigos + 7 ferramentas</p>
                 </div>
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-secondary text-primary"><Gift className="size-6" /></span>
               </div>
@@ -534,7 +542,7 @@ function Pricing() {
                 {BONUSES.map((b, i) => (
                   <li key={b.title} className="flex gap-3 text-[14.5px]">
                     <Tick />
-                    <span className="flex-1"><span className="font-extrabold text-primary">Bônus {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
+                    <span className="flex-1"><span className="font-extrabold text-primary">Item {String(i + 1).padStart(2, "0")}</span> · {b.title}</span>
                     <span className="shrink-0 text-right text-xs leading-tight">
                       <span className="block font-extrabold text-success">INCLUSO</span>
                     </span>
@@ -550,7 +558,7 @@ function Pricing() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-2xl font-extrabold">{basico.name}</h3>
-                  <p className="mt-1 text-sm text-ink-muted">Só o material principal</p>
+                  <p className="mt-1 text-sm text-ink-muted">Só os mapas visuais principais</p>
                 </div>
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-ink-foreground/10"><BookOpen className="size-6" /></span>
               </div>
@@ -559,9 +567,9 @@ function Pricing() {
                 <a href={checkoutHref("basico")} onClick={(event) => checkoutClick(event, "basico")}>Quero só o básico</a>
               </Button>
               <ul className="mt-7 space-y-3 border-t border-ink-foreground/10 pt-6 text-[15px]">
-                <li className="flex gap-3"><Tick />Mapa Fácil da Reforma Tributária</li>
+                <li className="flex gap-3"><Tick />Mapa Fácil da Reforma Tributária (PDF)</li>
                 <li className="flex gap-3"><Tick />Acesso imediato</li>
-                <li className="flex gap-3 text-ink-muted line-through decoration-ink-muted/60"><span className="grid size-6 shrink-0 place-items-center"><X className="size-4" /></span>8 bônus práticos</li>
+                <li className="flex gap-3 text-ink-muted line-through decoration-ink-muted/60"><span className="grid size-6 shrink-0 place-items-center"><X className="size-4" /></span>Tabela de códigos e 7 ferramentas fiscais</li>
               </ul>
               <p className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted"><ShieldCheck className="size-4" />{GUARANTEE_DAYS} dias de garantia</p>
             </div>
@@ -628,7 +636,7 @@ function Guarantee() {
         <div>
           <h2 className="text-2xl font-extrabold sm:text-3xl">Garantia de {GUARANTEE_DAYS} dias: o risco fica do nosso lado</h2>
           <p className="mt-3 leading-relaxed text-muted-foreground">
-            Se o material não deixar a Reforma Tributária mais clara para você, ou se simplesmente não quiser continuar, peça o reembolso integral dentro de {GUARANTEE_DAYS} dias. Sem burocracia e sem explicação obrigatória.
+            Se o material não ajudar na sua rotina fiscal ou não deixar a Reforma Tributária mais clara para você, peça o reembolso integral dentro de {GUARANTEE_DAYS} dias. Sem burocracia e sem explicação obrigatória.
           </p>
         </div>
       </Reveal>
@@ -641,8 +649,8 @@ function Guarantee() {
 function Steps() {
   const steps = [
     { title: "Conclua sua compra", text: "Pague com Pix em poucos segundos pelo app do seu banco." },
-    { title: "Receba o acesso", text: "O link chega no seu e-mail e no seu WhatsApp." },
-    { title: "Comece a estudar", text: "Abra os mapas no celular, no computador ou imprima." },
+    { title: "Receba o acesso", text: "O link chega no seu e-mail e no seu WhatsApp na mesma hora." },
+    { title: "Consulte na prática", text: "Abra a tabela de códigos, o gabarito da NF-e e os mapas no PC ou celular." },
   ];
   return (
     <section className="border-y border-border bg-muted/60">
@@ -669,11 +677,11 @@ function Steps() {
 
 function Faq() {
   const faqs: [string, string][] = [
-    ["Como recebo o material?", "Logo após a confirmação do pagamento, você recebe o acesso por e-mail e WhatsApp."],
-    ["O material é físico?", "Não. O material é 100% digital, para acessar no celular ou computador e imprimir se desejar."],
-    ["Serve para estudantes?", "Sim. O conteúdo é organizado de forma visual para quem está começando ou quer revisar os principais temas."],
-    ["O material substitui a legislação?", "Não. É um material educacional de apoio. Para decisões e casos específicos, consulte sempre a legislação oficial."],
-    ["E se a Reforma mudar?", "O material prevê atualizações conforme mudanças relevantes na Reforma Tributária."],
+    ["Como recebo o material e a tabela de códigos?", "Logo após a confirmação do pagamento, você recebe o acesso imediato por e-mail e WhatsApp."],
+    ["Qual plano inclui a Tabela de CST/cClassTrib e o Gabarito de NF-e?", "O Plano Completo (R$ 37,90) inclui o Mapa Fácil principal mais todas as 8 ferramentas práticas, incluindo a Tabela de Códigos, o Gabarito de preenchimento da Nota Fiscal, o Guia de emissão e a Calculadora IBS/CBS."],
+    ["O material é físico?", "Não. O material é 100% digital (PDF e planilhas), para consultar no computador durante a emissão de notas, no celular ou imprimir."],
+    ["O material substitui a legislação?", "Não. É um material prático e educacional de apoio rápido. Para casos específicos, consulte sempre a legislação e notas técnicas vigentes."],
+    ["E se a Reforma ou as tabelas mudarem?", "O material prevê atualizações conforme mudanças relevantes nas regras e códigos da Reforma Tributária."],
     ["E se eu não gostar?", `Você pode solicitar reembolso integral dentro do prazo de ${GUARANTEE_DAYS} dias de garantia.`],
   ];
   return (
@@ -705,10 +713,10 @@ function FinalCta() {
         <div className="ink-grid pointer-events-none absolute inset-0" />
         <div className="relative">
           <h2 className="text-3xl font-extrabold sm:text-5xl">
-            Pare de se perder. <span className="text-highlight">Comece a entender hoje.</span>
+            Não deixe sua nota travar. <span className="text-highlight">Parametrize com segurança hoje.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-            Todo o conteúdo da Reforma organizado em mapas visuais, com acesso imediato e {GUARANTEE_DAYS} dias de garantia.
+            Tabela de códigos IBS/CBS, gabarito de NF-e, planilha calculadora e mapas visuais com acesso imediato e {GUARANTEE_DAYS} dias de garantia.
           </p>
           <Button asChild variant="cta" size="2xl" className="mt-8 w-full sm:w-auto">
             <a href={checkoutHref("completo")} onClick={(event) => checkoutClick(event, "completo")}>
